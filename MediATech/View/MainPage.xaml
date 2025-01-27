@@ -11,7 +11,7 @@
 
         <Label 
             Grid.Row="0"
-            Text="Bienvenue sur l'application MediATech !"
+            Text="Bienvenue sur l'application Medi@Tech !"
             FontSize="45"
             FontAttributes="Bold"
             HorizontalTextAlignment="Center"

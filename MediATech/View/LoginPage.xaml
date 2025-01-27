@@ -32,21 +32,21 @@
             VerticalOptions="Start"
             HorizontalOptions="Center"
             Spacing="200">
-            
+
             <Button 
                 Text="Annuler"
                 BackgroundColor="Blue"
                 FontSize="Large"
-                Command="{Binding ClickOnNextCommand}" 
+                Command="{Binding ClickOnCancelCommand}" 
             />
 
             <Button 
                 Text="Suivant"
                 BackgroundColor="Blue"
                 FontSize="Large"
-                Command="{Binding ClickOnCancelCommand}" 
+                Command="{Binding ClickOnNextCommand}" 
             />
         </HorizontalStackLayout>
-
     </Grid>
+    
 </ContentPage>

@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace MediATech.ViewModel
 {
-    public partial class LoginPageViewModel : ObservableObject
+    public partial class PasswordPageViewModel : ObservableObject
     {
         [RelayCommand]
         private async Task ClickOnCancel()
@@ -14,7 +14,7 @@ namespace MediATech.ViewModel
         [RelayCommand]
         private async Task ClickOnNext()
         {
-            await Shell.Current.GoToAsync("//PasswordPage");
+            await Shell.Current.GoToAsync("//BookingPage");
         }
     }
 }
