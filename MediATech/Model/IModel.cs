@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MediATech.Model.DAL.User
+namespace MediATech.Model
 {
-    internal interface IUserDAO
+    public interface IModel
     {
-        public bool Login(string email, string password);
+
     }
 }

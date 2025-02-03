@@ -9,8 +9,8 @@ namespace MediATech.Model.BL
 {
     public class User : Person
     {
-        public User(int id, string firstName, string lastName, string email, string login, string password)
-            : base(id, firstName, lastName, email, login, password)
+        public User(int id, string firstName, string lastName, string email, string password)
+            : base(id, firstName, lastName, email, password)
         {
 
         }

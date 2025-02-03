@@ -8,20 +8,8 @@
     Title="MediATech">
 
     <ShellContent
-        ContentTemplate="{DataTemplate view:MainPage}"
-        Route="MainPage" />
-
-    <ShellContent
         ContentTemplate="{DataTemplate view:LoginPage}"
         Route="LoginPage" />
-
-    <ShellContent
-        ContentTemplate="{DataTemplate view:RegisterPage}"
-        Route="RegisterPage" />
-
-    <ShellContent
-        ContentTemplate="{DataTemplate view:PasswordPage}"
-        Route="PasswordPage" />
 
     <ShellContent
         ContentTemplate="{DataTemplate view:BookingPage}"

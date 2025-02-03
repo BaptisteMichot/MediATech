@@ -3,50 +3,278 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MediATech.View.LoginPage">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1.5*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <ScrollView>
+        <VerticalStackLayout
+            VerticalOptions="Center">
 
-        <Label 
-            Grid.Row="0"
-            Text="Entrez votre nom d'utilisateur :"
-            FontSize="25"
-            FontAttributes="Bold"
-            HorizontalTextAlignment="Center"
-            VerticalTextAlignment="Center"
-        />
-        
-        <Entry
-            Grid.Row="1"
-            HorizontalOptions="Center"
-            VerticalOptions="Start"
-            WidthRequest="250"
-            HeightRequest="50"
-        />
+            <Grid 
+                IsVisible="{Binding IsWelcomePageVisible}">
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-        <HorizontalStackLayout
-            Grid.Row="2"
-            VerticalOptions="Start"
-            HorizontalOptions="Center"
-            Spacing="200">
+                <Label 
+                    Grid.Row="0"
+                    Text="Bienvenue sur l'application Medi@Tech !"
+                    FontSize="45"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"
+                    Padding="50"
+                />
 
-            <Button 
-                Text="Annuler"
-                BackgroundColor="Blue"
-                FontSize="Large"
-                Command="{Binding ClickOnCancelCommand}" 
-            />
+                <VerticalStackLayout
+                    Grid.Row="1"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Spacing="30"
+                    WidthRequest="350"
+                    HeightRequest="350">
 
-            <Button 
-                Text="Suivant"
-                BackgroundColor="Blue"
-                FontSize="Large"
-                Command="{Binding ClickOnNextCommand}" 
-            />
-        </HorizontalStackLayout>
-    </Grid>
-    
+                    <Button 
+                        Text="Se connecter"
+                        BackgroundColor="Blue"
+                        FontSize="Large"
+                        Command="{Binding ClickOnLoginCommand}" 
+                    />
+
+                    <Button 
+                        Text="S'inscrire"
+                        BackgroundColor="Blue"
+                        FontSize="Large"
+                        Command="{Binding ClickOnRegisterCommand}" 
+                    />
+                </VerticalStackLayout>
+            </Grid>
+
+            <Grid
+                IsVisible="{Binding IsUsernamePageVisible}">
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Label 
+                    Grid.Row="0"
+                    Text="Entrez votre adresse mail :"
+                    FontSize="25"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"
+                    Padding="50"
+                />
+
+                <Entry
+                    Grid.Row="1"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Start"
+                    WidthRequest="250"
+                    HeightRequest="50"
+                    Text="{Binding Email}"
+                />
+
+                <HorizontalStackLayout
+                    Grid.Row="2"
+                    VerticalOptions="Start"
+                    HorizontalOptions="Center"
+                    Spacing="200"
+                    Margin="50">
+
+                    <Button 
+                        Text="Annuler"
+                        BackgroundColor="Blue"
+                        FontSize="Large"
+                        Command="{Binding ClickOnCancelCommand}" 
+                    />
+
+                    <Button 
+                        Text="Suivant"
+                        BackgroundColor="Blue"
+                        FontSize="Large"
+                        Command="{Binding ClickOnNextAfterUsernameCommand}" 
+                    />
+                </HorizontalStackLayout>
+            </Grid>
+
+            <Grid
+                IsVisible="{Binding IsPasswordPageVisible}">
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Label 
+                    Grid.Row="0"
+                    Text="Entrez votre mot de passe :"
+                    FontSize="25"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"
+                    Padding="50"
+                />
+
+                <Entry
+                    Grid.Row="1"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Start"
+                    WidthRequest="250"
+                    HeightRequest="50"
+                    Text="{Binding Password}"
+                    IsPassword="True"
+                />
+
+                <Label
+                    IsVisible="{Binding IsLoginFailedVisible}"
+                    Grid.Row="2"
+                    Text="Échec de la connexion : adresse mail ou mot de passe incorrect !"
+                    TextColor="Red"
+                    FontSize="20"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"
+                />
+
+                <HorizontalStackLayout
+                    Grid.Row="3"
+                    VerticalOptions="Start"
+                    HorizontalOptions="Center"
+                    Spacing="200"
+                    Margin="50">
+
+                    <Button 
+                        Text="Annuler"
+                        BackgroundColor="Blue"
+                        FontSize="Large"
+                        Command="{Binding ClickOnCancelCommand}" 
+                    />
+
+                    <Button 
+                        Text="Suivant"
+                        BackgroundColor="Blue"
+                        FontSize="Large"
+                        Command="{Binding ClickOnNextAfterPasswordCommand}" 
+                    />
+                </HorizontalStackLayout>
+            </Grid>
+
+            <Grid
+                IsVisible="{Binding IsRegisterPageVisible}">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="3*"/>
+                </Grid.RowDefinitions>
+
+                <Label
+                    Grid.Row="0"
+                    Text="Créez votre compte"
+                    FontAttributes="Bold"
+                    FontSize="35"
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"
+                />
+
+                <VerticalStackLayout 
+                    Grid.Row="1" 
+                    Spacing="20" 
+                    Padding="20">
+
+                    <Entry
+                        Placeholder="Prénom"
+                        WidthRequest="300"
+                        HeightRequest="40"
+                        HorizontalOptions="Center"
+                    />
+
+                    <Entry
+                        Placeholder="Nom"
+                        WidthRequest="300"
+                        HeightRequest="40"
+                        HorizontalOptions="Center"
+                    />
+
+                    <Entry
+                        Placeholder="Adresse mail"
+                        WidthRequest="300"
+                        HeightRequest="40"
+                        HorizontalOptions="Center"
+                    />
+
+                    <Entry
+                        Placeholder="Mot de passe"
+                        IsPassword="True"
+                        WidthRequest="300"
+                        HeightRequest="40"
+                        HorizontalOptions="Center"
+                    />
+
+                    <Entry
+                        Placeholder="Confirmez votre mot de passe"
+                        IsPassword="True"
+                        WidthRequest="300"
+                        HeightRequest="40"
+                        HorizontalOptions="Center"
+                    />
+
+                    <HorizontalStackLayout 
+                        Spacing="200" 
+                        HorizontalOptions="Center"
+                        Margin="30">
+                        
+                        <Button
+                            Text="Annuler"
+                            BackgroundColor="Blue"
+                            FontSize="Large"
+                            Command="{Binding ClickOnCancelCommand}"
+                        />
+
+                        <Button
+                            Text="Valider"
+                            BackgroundColor="Blue"
+                            FontSize="Large"
+                            Command="{Binding ClickOnValidateCommand}"
+                        />
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+            </Grid>
+
+            <Grid
+                IsVisible="{Binding IsRegisterSucceedPageVisible}">
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Label 
+                    Grid.Row="0"
+                    Text="Inscription réussie !"
+                    FontSize="25"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"
+                    Padding="30"
+                />
+
+                <Button 
+                    Grid.Row="1"
+                    Text="Se connecter"
+                    BackgroundColor="Blue"
+                    FontSize="Large"
+                    Command="{Binding ClickOnLoginCommand}" 
+                    HorizontalOptions="Center"
+                />
+            </Grid>
+
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

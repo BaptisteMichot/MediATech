@@ -16,17 +16,15 @@ namespace MediATech.Model.BL
         private string _firstName;
         private string _lastName;
         private string _email;
-        private string _login;
         private string _password;
 
-        
-        public Person(int id, string firstName, string lastName, string email, string login, string password)
+
+        public Person(int id, string firstName, string lastName, string email, string password)
         {
             Id = id;
             LastName = lastName;
             FirstName = firstName;
             Email = email;
-            Login = login;
             Password = password;
         }
 
@@ -62,16 +60,6 @@ namespace MediATech.Model.BL
             }
         }
 
-        public string Login
-        {
-            get => _login;
-            private set
-            {
-                _login = value;
-                OnPropertyChanged(nameof(Login));
-            }
-        }
-
         protected string Password
         {
             get => _password;
@@ -82,6 +70,10 @@ namespace MediATech.Model.BL
             }
         }
 
+        public bool CheckPassword(string passwordToCheck)
+        {
+            return _password == passwordToCheck;
+        }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

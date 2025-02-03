@@ -21,6 +21,13 @@ namespace MediATech.Model.DAL
             }
         }
 
+        public static NpgsqlConnection GetConnection()
+        {
+            var connection = new NpgsqlConnection("Host=127.0.0.1;Database=mediatechdb;Username=postgres;Password=Q47!pL9s$2kT");
+            connection.Open();
+            return connection;
+        }
+
         public bool Close()
         {
             if (connection != null)

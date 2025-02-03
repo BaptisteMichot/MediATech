@@ -17,18 +17,9 @@ namespace MediATech
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            //permet de faire une injection de dépendance dans le constructeur de la MainPage sans devoir faire un new MainPageViewModel()
-            builder.Services.AddTransient<MainPageViewModel>();
-            builder.Services.AddTransient<MainPage>();            
-
+            //permet de faire une injection de dépendance dans le constructeur de la LoginPage sans devoir faire un new LoginPageViewModel()
             builder.Services.AddTransient<LoginPageViewModel>();
             builder.Services.AddTransient<LoginPage>();
-
-            builder.Services.AddTransient<RegisterPageViewModel>();
-            builder.Services.AddTransient<RegisterPage>();
-
-            builder.Services.AddTransient<PasswordPageViewModel>();
-            builder.Services.AddTransient<PasswordPage>();
 
             builder.Services.AddTransient<BookingPageViewModel>();
             builder.Services.AddTransient<BookingPage>();
