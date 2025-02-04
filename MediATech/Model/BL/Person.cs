@@ -60,7 +60,7 @@ namespace MediATech.Model.BL
             }
         }
 
-        protected string Password
+        public string Password
         {
             get => _password;
             set

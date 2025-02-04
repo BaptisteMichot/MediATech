@@ -1,5 +1,7 @@
 ﻿using System;
+using MediATech.Model.DAL.User;
 using Npgsql;
+
 
 namespace MediATech.Model.DAL
 {
@@ -44,6 +46,11 @@ namespace MediATech.Model.DAL
             }
 
             return true;
+        }
+
+        public IUserDAO CreateUserDAO()
+        {
+            return new UserDAO(this.connection);
         }
     }
 }

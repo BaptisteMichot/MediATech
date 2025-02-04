@@ -191,6 +191,7 @@
                         WidthRequest="300"
                         HeightRequest="40"
                         HorizontalOptions="Center"
+                        Text="{Binding FirstName}"
                     />
 
                     <Entry
@@ -198,6 +199,7 @@
                         WidthRequest="300"
                         HeightRequest="40"
                         HorizontalOptions="Center"
+                        Text="{Binding LastName}"
                     />
 
                     <Entry
@@ -205,6 +207,7 @@
                         WidthRequest="300"
                         HeightRequest="40"
                         HorizontalOptions="Center"
+                        Text="{Binding Email}"
                     />
 
                     <Entry
@@ -213,6 +216,7 @@
                         WidthRequest="300"
                         HeightRequest="40"
                         HorizontalOptions="Center"
+                        Text="{Binding Password}"
                     />
 
                     <Entry
@@ -221,6 +225,7 @@
                         WidthRequest="300"
                         HeightRequest="40"
                         HorizontalOptions="Center"
+                        Text="{Binding RepeatPassword}"
                     />
 
                     <HorizontalStackLayout 

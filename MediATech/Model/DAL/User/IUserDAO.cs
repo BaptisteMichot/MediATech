@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace MediATech.Model.DAL.User
 {
-    internal interface IUserDAO
+    public interface IUserDAO
     {
         public bool Login(string email, string password);
+
+        public bool Register(string firstName, string lastName, string email, string password);
     }
 }

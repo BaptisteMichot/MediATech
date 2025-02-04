@@ -2,18 +2,26 @@
 using CommunityToolkit.Mvvm.Input;
 using MediATech.Model.DAL.User;
 using MediATech.Model.DAL;
+using MediATech.Model.BL;
+using MediATech.Model;
 
 namespace MediATech.ViewModel
 {
     public partial class LoginPageViewModel : ObservableObject
     {
-        private UserDAO user;
-
+        private IModel model;
+        
         [ObservableProperty]
         private string _email;
 
         [ObservableProperty]
         private string _password;
+
+        [ObservableProperty]
+        private string _firstName;
+
+        [ObservableProperty]
+        private string _lastName;
 
         [ObservableProperty]
         private bool _isWelcomePageVisible = true;
@@ -35,8 +43,7 @@ namespace MediATech.ViewModel
 
         public LoginPageViewModel()
         {
-            var connection = DAOFactory.GetConnection();
-            user = new UserDAO(connection);
+            model = new PrimaryModel();
         }
 
         [RelayCommand]
@@ -76,7 +83,7 @@ namespace MediATech.ViewModel
         [RelayCommand]
         private async Task ClickOnNextAfterPassword()
         {
-            bool isAuthenticated = user.Login(Email, Password);
+            bool isAuthenticated = model.Login(Email, Password);
 
             if (isAuthenticated)
             {
@@ -91,8 +98,12 @@ namespace MediATech.ViewModel
         [RelayCommand]
         private async Task ClickOnValidate()
         {
-            IsRegisterSucceedPageVisible = true;
-            IsRegisterPageVisible = false;
+            bool isRegistered = model.Register(FirstName, LastName, Email, Password);
+
+            if (isRegistered) {
+                IsRegisterSucceedPageVisible = true;
+                IsRegisterPageVisible = false;
+            }            
         }
     }
 }

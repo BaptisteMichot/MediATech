@@ -8,6 +8,8 @@ namespace MediATech.Model
 {
     public interface IModel
     {
+        public bool Register(string firstName, string lastName, string email, string password);
 
+        public bool Login(string email, string password);
     }
 }
