@@ -74,9 +74,6 @@ public class RegisterView {
         Scene scene = new Scene(layout, 600, 600);
         stage.setTitle("MediaTech - Inscription");
         stage.setScene(scene);
-        //full screen
-        stage.setWidth(javafx.stage.Screen.getPrimary().getVisualBounds().getWidth());
-        stage.setHeight(javafx.stage.Screen.getPrimary().getVisualBounds().getHeight());
         stage.show();
     }
 
@@ -84,8 +81,9 @@ public class RegisterView {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Inscription");
         alert.setHeaderText(null);
-        alert.setContentText("Inscription réussie!");
+        alert.setContentText("Inscription réussie !");
         alert.showAndWait();
+        returnToLoginView();
     }
 
     public void showRegistrationError(boolean[] invalidFields) {

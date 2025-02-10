@@ -17,6 +17,8 @@ import javafx.scene.layout.Region;
 public class LoginView {
     private Stage stage;
     private LoginController controller;
+    private TextField emailField;
+    private PasswordField passwordField;
 
     public LoginView(Stage stage) {
         this.stage = stage;
@@ -32,12 +34,12 @@ public class LoginView {
         Label titleLabel = new Label("Connexion");
         titleLabel.setStyle("-fx-font-size: 55px; -fx-font-weight: bold;");
 
-        TextField emailField = new TextField();
+        emailField = new TextField();
         emailField.setMaxWidth(300);
         emailField.setStyle("-fx-font-size: 18px;");
         emailField.setPromptText("Email");
 
-        PasswordField passwordField = new PasswordField();
+        passwordField = new PasswordField();
         passwordField.setMaxWidth(300); 
         passwordField.setStyle("-fx-font-size: 18px;");
         passwordField.setPromptText("Mot de passe");
@@ -53,7 +55,11 @@ public class LoginView {
         registerButton.setStyle("-fx-font-size: 25px; -fx-background-color: #2196F3; -fx-text-fill: white;");
         registerButton.setOnAction(e -> openRegisterView());
 
-        layout.getChildren().addAll(titleLabel, emailField, passwordField, spacer,loginButton, registerButton);
+        Button changePasswordButton = new Button("Changer de mot de passe");
+        changePasswordButton.setStyle("-fx-font-size: 18px; -fx-background-color: transparent; -fx-text-fill: #555;");
+        changePasswordButton.setOnAction(e -> new ChangePasswordView(stage));
+
+        layout.getChildren().addAll(titleLabel, emailField, passwordField, spacer,loginButton, registerButton, changePasswordButton);
 
         Scene scene = new Scene(layout, 600, 600);
         stage.setTitle("MediaTech - Connexion");

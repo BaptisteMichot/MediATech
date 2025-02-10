@@ -27,12 +27,8 @@ public class RegisterController {
             invalidFields[1] = !newUser.isValidName(prenom);
             invalidFields[2] = !newUser.isValidEmail(email);
             invalidFields[3] = !newUser.isValidPassword(password);
-            for (boolean invalid : invalidFields) {
-                if (invalid) {
-                    view.showRegistrationError(invalidFields);
-                    return;
-                }
-            }
+            
+            view.showRegistrationError(invalidFields);
         }
     }
 }

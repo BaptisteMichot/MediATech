@@ -15,6 +15,8 @@ public class User {
         this.password = password;
         this.role = role;
     }
+
+    public User() {}
     
     public String getLastName() { 
         return lastName; 
@@ -67,4 +69,13 @@ public class User {
         String regex = "^(?=.*[A-Za-z])(?=.*\\d).{5,}$"; //at least one letter, one number and 5 characters
         return password != null && password.matches(regex);
     }
+
+    public boolean changePassword(String currentPassword, String newPassword) {
+        
+        if (currentPassword == null || newPassword.equals(currentPassword) || !isValidPassword(newPassword)) {
+            return false;
+        }
+        return true;
+    }
+    
 }

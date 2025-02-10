@@ -11,13 +11,15 @@ public class UserDAO {
 
     private Connection connection;
     private PreparedStatement insertUser;
-    private PreparedStatement selectUser;    
+    private PreparedStatement selectUser; 
+    private PreparedStatement updatePassword;   
 
     public UserDAO(DBConnection dbConnection) {
         try {
             this.connection = dbConnection.getConnection();
             this.insertUser = connection.prepareStatement("INSERT INTO users (firstName, lastName, email, password, role) VALUES (?, ?, ?, ?, ?)");
             this.selectUser = connection.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?");
+            this.updatePassword = connection.prepareStatement("UPDATE users SET password = ? WHERE email = ?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -67,6 +69,18 @@ public class UserDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean updatePassword(String email, String newPassword) {
+        try {
+            updatePassword.setString(1, newPassword);
+            updatePassword.setString(2, email);
+            updatePassword.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     
