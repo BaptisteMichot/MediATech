@@ -17,6 +17,10 @@ import javafx.stage.Stage;
 public class RegisterView {
     private Stage stage;
     private RegisterController controller;
+    private TextField lastNameField;
+    private TextField firstNameField;
+    private TextField emailField;
+    private PasswordField passwordField;
 
     public RegisterView(Stage stage) {
         this.stage = stage;
@@ -32,22 +36,22 @@ public class RegisterView {
         Label titleLabel = new Label("Inscription");
         titleLabel.setStyle("-fx-font-size: 55px; -fx-font-weight: bold;");
         
-        TextField lastNameField = new TextField();
+        lastNameField = new TextField();
         lastNameField.setMaxWidth(300);
         lastNameField.setStyle("-fx-font-size: 18px;");
         lastNameField.setPromptText("Nom");
         
-        TextField firstNameField = new TextField();
+        firstNameField = new TextField();
         firstNameField.setMaxWidth(300);
         firstNameField.setStyle("-fx-font-size: 18px;");
         firstNameField.setPromptText("Prénom");
         
-        TextField emailField = new TextField();
+        emailField = new TextField();
         emailField.setMaxWidth(300);
         emailField.setStyle("-fx-font-size: 18px;");
         emailField.setPromptText("Email");
         
-        PasswordField passwordField = new PasswordField();
+        passwordField = new PasswordField();
         passwordField.setMaxWidth(300);
         passwordField.setStyle("-fx-font-size: 18px;");
         passwordField.setPromptText("Mot de passe");
@@ -84,11 +88,36 @@ public class RegisterView {
         alert.showAndWait();
     }
 
-    public void showRegistrationError() {
+    public void showRegistrationError(boolean[] invalidFields) {
+        //reset styles to not have red borders on valid fields after several attempts
+        lastNameField.setStyle("-fx-font-size: 18px;");
+        firstNameField.setStyle("-fx-font-size: 18px;");
+        emailField.setStyle("-fx-font-size: 18px;");
+        passwordField.setStyle("-fx-font-size: 18px;");
+
+        StringBuilder errorMessage = new StringBuilder("Échec de l'inscription.\n");
+        
+        if (invalidFields[0]) {
+            lastNameField.setStyle("-fx-font-size: 18px; -fx-border-color: red;");
+            errorMessage.append("Le nom est invalide.\n");
+        }
+        if (invalidFields[1]) {
+            firstNameField.setStyle("-fx-font-size: 18px; -fx-border-color: red;");
+            errorMessage.append("Le prénom est invalide.\n");
+        }
+        if (invalidFields[2]) {
+            emailField.setStyle("-fx-font-size: 18px; -fx-border-color: red;");
+            errorMessage.append("Le format de l'adresse mail est incorrect.\n");
+        }
+        if (invalidFields[3]) {
+            passwordField.setStyle("-fx-font-size: 18px; -fx-border-color: red;");
+            errorMessage.append("Le mot de passe doit avoir au minimum 5 caractères et contenir une lettre et un chiffre.\n");
+        }  
+
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Inscription");
         alert.setHeaderText(null);
-        alert.setContentText("Échec de l'inscription. Veuillez réessayer.");
+        alert.setContentText(errorMessage.toString().trim());
         alert.showAndWait();
     }
 

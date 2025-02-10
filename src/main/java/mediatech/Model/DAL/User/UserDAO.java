@@ -24,6 +24,24 @@ public class UserDAO {
     }
 
     public boolean register(User user) {
+
+        if (!user.isValidEmail(user.getEmail())) {
+            System.out.println("Invalid email format");
+            return false;
+        }
+        if (!user.isValidPassword(user.getPassword())){
+            System.out.println("Invalid password format");
+            return false;
+        }
+        if (!user.isValidName(user.getFirstName())){
+            System.out.println("Invalid first name format");
+            return false;
+        }
+        if (!user.isValidName(user.getLastName())){
+            System.out.println("Invalid last name format");
+            return false;
+        }
+
         try {
             insertUser.setString(1, user.getLastName());
             insertUser.setString(2, user.getFirstName());

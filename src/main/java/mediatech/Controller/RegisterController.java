@@ -19,10 +19,20 @@ public class RegisterController {
     public void handleRegister(String nom, String prenom, String email, String password) {
         final String ROLE = "user";
         User newUser = new User(nom, prenom, email, password, ROLE);
+        boolean[] invalidFields = new boolean[4];
         if (userDAO.register(newUser)) {
             view.showRegistrationSuccess();
         } else {
-            view.showRegistrationError();
+            invalidFields[0] = !newUser.isValidName(nom);
+            invalidFields[1] = !newUser.isValidName(prenom);
+            invalidFields[2] = !newUser.isValidEmail(email);
+            invalidFields[3] = !newUser.isValidPassword(password);
+            for (boolean invalid : invalidFields) {
+                if (invalid) {
+                    view.showRegistrationError(invalidFields);
+                    return;
+                }
+            }
         }
     }
 }

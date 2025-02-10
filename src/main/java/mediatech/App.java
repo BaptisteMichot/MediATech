@@ -11,8 +11,8 @@ public class App  extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
-        new LoginView(primaryStage);
-        primaryStage.show();
+    public void start(Stage stage) {
+        new LoginView(stage);
+        stage.show();
     }
 }
