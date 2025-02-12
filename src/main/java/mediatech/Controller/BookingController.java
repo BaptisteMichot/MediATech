@@ -25,10 +25,11 @@ public class BookingController {
 
     public BookingController(BookingView view) {
         this.view = view;
+        this.dbConnection = new DBConnection();
         this.bookDAO = new BookDAO(dbConnection);
         this.dvdDAO = new DVDDAO(dbConnection);
         this.blurayDAO = new BlurayDAO(dbConnection);
-        this.reservationDAO = new ReservationDAO();
+        this.reservationDAO = new ReservationDAO(dbConnection);
     }
 
     public ArrayList<Book> getAllBooks() {
@@ -45,19 +46,20 @@ public class BookingController {
 
     public void addMediaObject(MediaObject mediaObject) {
         if (mediaObject == null) {
-            // TODO: Show error message to user
+            view.showErrorMessage("No media object selected.");
             return;
         }
-
+    
         // Create a new reservation for the selected media object
         Reservation reservation = new Reservation();
-        // TODO: Set user, media object, and other necessary details
-        
+        reservation.setMediaObject(mediaObject);
+        reservation.setUser(view.getCurrentUser()); // Assuming there's a method to get the current user
+    
         try {
             reservationDAO.create(reservation);
-            // TODO: Show success message to user
+            view.showSuccessMessage("Reservation created successfully.");
         } catch (Exception e) {
-            // TODO: Show error message to user
+            view.showErrorMessage("Failed to create reservation.");
             e.printStackTrace();
         }
     }

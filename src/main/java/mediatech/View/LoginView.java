@@ -74,12 +74,17 @@ public class LoginView {
         new RegisterView(stage); 
     }
 
+    public void openBookingView() {
+        new BookingView(stage);
+    }
+
     public void showLoginSuccess() {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Connexion");
         alert.setHeaderText(null);
         alert.setContentText("Connexion réussie!");
         alert.showAndWait();
+        openBookingView();
     }
 
     public void showLoginError() {

@@ -9,4 +9,5 @@ module mediatech {
     exports mediatech;
     exports mediatech.View;    
     exports mediatech.Controller; 
+    exports mediatech.Model.BL;
 }
