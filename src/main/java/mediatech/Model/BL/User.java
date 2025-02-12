@@ -2,13 +2,14 @@ package mediatech.Model.BL;
 
 public class User {
 
+    private int id;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
     private String role;
 
-    public User(String lastName, String firstName, String email, String password, String role) {
+    public User(int id, String lastName, String firstName, String email, String password, String role) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.email = email;
@@ -18,6 +19,13 @@ public class User {
 
     public User() {}
     
+    public int getId() { 
+        return id; 
+    }
+    public void setId(int id) { 
+        this.id = id; 
+    }
+        
     public String getLastName() { 
         return lastName; 
     }

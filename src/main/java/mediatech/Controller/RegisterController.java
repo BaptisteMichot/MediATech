@@ -18,7 +18,7 @@ public class RegisterController {
 
     public void handleRegister(String nom, String prenom, String email, String password) {
         final String ROLE = "user";
-        User newUser = new User(nom, prenom, email, password, ROLE);
+        User newUser = new User(0, nom, prenom, email, password, ROLE);
         boolean[] invalidFields = new boolean[4];
         if (userDAO.register(newUser)) {
             view.showRegistrationSuccess();
