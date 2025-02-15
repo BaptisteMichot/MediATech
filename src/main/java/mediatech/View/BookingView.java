@@ -3,36 +3,32 @@ package mediatech.View;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import mediatech.Controller.BookingController;
 import mediatech.Model.BL.Book;
 import mediatech.Model.BL.DVD;
-import mediatech.Model.BL.User;
 import mediatech.Model.BL.Bluray;
+import mediatech.Model.BL.User;
 
-import java.util.ArrayList;
 
 public class BookingView {
     private Stage stage;
+    private User currentUser;
     private BookingController controller;
 
     private ComboBox<Book> bookComboBox;
     private ComboBox<DVD> dvdComboBox;
     private ComboBox<Bluray> blurayComboBox;
 
-    private Button bookAddButton;
-    private Button dvdAddButton;
-    private Button blurayAddButton;
-
-    private User currentUser;
-
-    public BookingView(Stage stage) {
+    public BookingView(Stage stage, User currentUser) {
         this.stage = stage;
+        this.currentUser = currentUser;
         this.controller = new BookingController(this);
         initView();
     }
@@ -41,67 +37,68 @@ public class BookingView {
         VBox layout = new VBox(20);
         layout.setPadding(new Insets(40));
         layout.setAlignment(Pos.CENTER);
+        
+        Label title = new Label("Choisissez un média à réserver");
+        title.setStyle("-fx-font-size: 45px; -fx-font-weight: bold;");
 
-        // Book Dropdown
-        bookComboBox = new ComboBox<>();
-        bookAddButton = new Button("Ajouter");
-        bookAddButton.setOnAction(e -> controller.addMediaObject(bookComboBox.getValue()));
-        VBox bookSection = new VBox(5, bookComboBox, bookAddButton);
-
-        // DVD Dropdown
-        dvdComboBox = new ComboBox<>();
-        dvdAddButton = new Button("Ajouter");
-        dvdAddButton.setOnAction(e -> controller.addMediaObject(dvdComboBox.getValue()));
-        VBox dvdSection = new VBox(5, dvdComboBox, dvdAddButton);
-
-        // Bluray Dropdown
-        blurayComboBox = new ComboBox<>();
-        blurayAddButton = new Button("Ajouter");
-        blurayAddButton.setOnAction(e -> controller.addMediaObject(blurayComboBox.getValue()));
-        VBox bluraySection = new VBox(5, blurayComboBox, blurayAddButton);
-
-        layout.getChildren().addAll(bookSection, dvdSection, bluraySection);
+        layout.getChildren().addAll(title, createMediaSection("Livres", bookComboBox = new ComboBox<>()),
+            createMediaSection("DVDs", dvdComboBox = new ComboBox<>()), 
+            createMediaSection("Blurays", blurayComboBox = new ComboBox<>()));
 
         Scene scene = new Scene(layout, 600, 600);
-        stage.setTitle("MediaTech - Réservation");
+        stage.setTitle("Réservation");
         stage.setScene(scene);
         stage.show();
 
-        // Load media objects
-        loadMediaObjects();
+        //fill comboboxes
+        bookComboBox.getItems().addAll(controller.getAllBooks());
+        dvdComboBox.getItems().addAll(controller.getAllDVDs());
+        blurayComboBox.getItems().addAll(controller.getAllBlurays());
     }
 
-    private void loadMediaObjects() {
-        ArrayList<Book> books = controller.getAllBooks();
-        ArrayList<DVD> dvds = controller.getAllDVDs();
-        ArrayList<Bluray> blurays = controller.getAllBlurays();
+    private VBox createMediaSection(String labelText, ComboBox<?> comboBox) {
+        Label label = new Label(labelText);
+        label.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
-        bookComboBox.getItems().addAll(books);
-        dvdComboBox.getItems().addAll(dvds);
-        blurayComboBox.getItems().addAll(blurays);
+        comboBox.setPrefWidth(250);
+        Button reserve = new Button("Réserver");
+        reserve.setStyle("-fx-font-size: 20px; -fx-background-color: #2196F3; -fx-text-fill: white;");
+
+        if (comboBox == bookComboBox) {
+            reserve.setOnAction(e -> controller.addMediaObject(bookComboBox.getValue()));
+        }else if (comboBox == dvdComboBox) {
+            reserve.setOnAction(e -> controller.addMediaObject(dvdComboBox.getValue()));
+        }else if (comboBox == blurayComboBox) {
+            reserve.setOnAction(e -> controller.addMediaObject(blurayComboBox.getValue()));
+        } 
+
+        HBox hbox = new HBox(10, comboBox, reserve);
+        hbox.setAlignment(Pos.CENTER);
+
+        VBox vbox = new VBox(10, label, hbox);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(20));
+        
+        return vbox;
     }
 
     public void showErrorMessage(String message) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("Error");
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
 
     public void showSuccessMessage(String message) {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Success");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Succès");
         alert.setHeaderText(null);
         alert.setContentText(message);
-        alert.showAndWait();
+        alert.show();
     }
 
     public User getCurrentUser() {
         return currentUser;
-    }
-
-    public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
     }
 }

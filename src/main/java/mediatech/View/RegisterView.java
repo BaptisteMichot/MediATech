@@ -72,7 +72,7 @@ public class RegisterView {
             passwordField, spacer, registerButton, goBackButton);
 
         Scene scene = new Scene(layout, 600, 600);
-        stage.setTitle("MediaTech - Inscription");
+        stage.setTitle("Inscription");
         stage.setScene(scene);
         stage.show();
     }

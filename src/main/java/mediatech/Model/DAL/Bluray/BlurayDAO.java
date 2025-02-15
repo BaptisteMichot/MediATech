@@ -61,6 +61,37 @@ public class BlurayDAO {
     }
 
 
+    public boolean close() {
+        boolean returnValue = true;
+
+        if (this.connection != null) {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.selectAvailableBlurays != null) {
+            try {
+                this.selectAvailableBlurays.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.selectBlurayByTitle != null) {
+            try {
+                this.selectBlurayByTitle.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        return returnValue;
+    }
+
+
     // //@Override
     // public boolean create(Bluray bluray) {
     //     try {

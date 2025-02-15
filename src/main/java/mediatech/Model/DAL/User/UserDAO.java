@@ -27,20 +27,8 @@ public class UserDAO {
 
     public boolean register(User user) {
 
-        if (!user.isValidEmail(user.getEmail())) {
-            System.out.println("Invalid email format");
-            return false;
-        }
-        if (!user.isValidPassword(user.getPassword())){
-            System.out.println("Invalid password format");
-            return false;
-        }
-        if (!user.isValidName(user.getFirstName())){
-            System.out.println("Invalid first name format");
-            return false;
-        }
-        if (!user.isValidName(user.getLastName())){
-            System.out.println("Invalid last name format");
+        if (!user.isValidEmail(user.getEmail()) || !user.isValidPassword(user.getPassword()) || 
+            !user.isValidName(user.getFirstName()) || !user.isValidName(user.getLastName())) {
             return false;
         }
 
@@ -83,6 +71,21 @@ public class UserDAO {
         return true;
     }
 
+    public User getUser(String email, String password) {
+        try {
+            selectUser.setString(1, email);
+            selectUser.setString(2, password);
+            ResultSet set = this.selectUser.executeQuery();
+            
+            if (set.next()) {
+                return new User(set.getInt(1), set.getString(3), set.getString(2), 
+                    set.getString(4), set.getString(5), set.getString(6));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     
     public boolean close() {
         boolean returnValue = true;
@@ -95,7 +98,6 @@ public class UserDAO {
                 returnValue = false;
             }
         }
-
         if (this.insertUser != null) {
             try {
                 this.insertUser.close();
@@ -104,7 +106,6 @@ public class UserDAO {
                 returnValue = false;
             }
         }
-
         if (this.selectUser != null) {
             try {
                 this.selectUser.close();
@@ -113,7 +114,14 @@ public class UserDAO {
                 returnValue = false;
             }
         }
-
+        if (this.updatePassword != null) {
+            try {
+                this.updatePassword.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
         return returnValue;
     }
 }

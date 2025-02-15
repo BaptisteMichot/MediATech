@@ -60,6 +60,36 @@ public class DVDDAO {
         return null;
     }
 
+    public boolean close() {
+        boolean returnValue = true;
+
+        if (this.connection != null) {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.selectAvailableDVDs != null) {
+            try {
+                this.selectAvailableDVDs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.selectDVDByTitle != null) {
+            try {
+                this.selectDVDByTitle.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        return returnValue;
+    }
+
 
     // //@Override
     // public boolean create(DVD dvd) {

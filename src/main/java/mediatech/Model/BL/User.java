@@ -10,6 +10,7 @@ public class User {
     private String role;
 
     public User(int id, String lastName, String firstName, String email, String password, String role) {
+        this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
         this.email = email;

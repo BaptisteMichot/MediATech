@@ -61,6 +61,37 @@ public class BookDAO {
     }
 
 
+    public boolean close() {
+        boolean returnValue = true;
+
+        if (this.connection != null) {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.selectAvailableBooks != null) {
+            try {
+                this.selectAvailableBooks.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.selectBookByTitle != null) {
+            try {
+                this.selectBookByTitle.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        return returnValue;
+    }
+
+
     //@Override
     // public boolean create(Book book) {
     //     try {

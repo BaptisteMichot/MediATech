@@ -13,6 +13,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.layout.Region;
+import mediatech.Model.BL.User;
 
 public class LoginView {
     private Stage stage;
@@ -75,7 +76,8 @@ public class LoginView {
     }
 
     public void openBookingView() {
-        new BookingView(stage);
+        User currentUser = controller.getCurrentUser();
+        new BookingView(stage, currentUser);
     }
 
     public void showLoginSuccess() {

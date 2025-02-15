@@ -12,8 +12,9 @@ import mediatech.Model.DAL.Bluray.BlurayDAO;
 import mediatech.Model.DAL.Reservation.ReservationDAO;
 import mediatech.View.BookingView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Calendar;
 
 public class BookingController {
     private BookingView view;
@@ -45,22 +46,44 @@ public class BookingController {
     }
 
     public void addMediaObject(MediaObject mediaObject) {
+        String mediaType;
+        String message;
+        int defaultDurationInMonths = 2;
+        
         if (mediaObject == null) {
-            view.showErrorMessage("No media object selected.");
+            view.showErrorMessage("Vous n'avez rien sélectionné");
             return;
         }
-    
-        // Create a new reservation for the selected media object
-        Reservation reservation = new Reservation();
-        reservation.setMediaObject(mediaObject);
-        reservation.setUser(view.getCurrentUser()); // Assuming there's a method to get the current user
-    
-        try {
-            reservationDAO.create(reservation);
-            view.showSuccessMessage("Reservation created successfully.");
-        } catch (Exception e) {
-            view.showErrorMessage("Failed to create reservation.");
-            e.printStackTrace();
+
+        //on détermine le type de MeidaObject sélectionné
+        if (mediaObject instanceof Book) {
+            mediaType = "book";
+            message = "Le livre";
+        } else if (mediaObject instanceof DVD) {
+            mediaType = "dvd";
+            message = "Le DVD";
+        } else if (mediaObject instanceof Bluray) {
+            mediaType = "bluray";
+            message = "Le bluray";
+        } else {
+            view.showErrorMessage("Type de média non reconnu");
+            return;
+        }
+
+        Date reservationDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(reservationDate);
+        calendar.add(Calendar.MONTH, defaultDurationInMonths);
+        Date expirationDate = calendar.getTime();
+
+
+        Reservation reservation = new Reservation(mediaObject.getId(), view.getCurrentUser().getId(), 
+            mediaType, reservationDate, expirationDate, true);
+
+        if (reservationDAO.addReservation(reservation)) {
+            view.showSuccessMessage(message + " a bien été réservé");
+        } else {
+            view.showErrorMessage("Vous avez déjà réservé ce média");
         }
     }
 }
