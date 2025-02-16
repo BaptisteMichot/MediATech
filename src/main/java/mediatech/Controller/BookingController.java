@@ -105,6 +105,9 @@ public class BookingController {
             message += "\nDurée: " + dvd.getDuration() + " minutes";
         } else if (mediaObject instanceof Bluray bluray) {
             message += "\nDurée: " + bluray.getDuration() + " minutes\n4K: " + (bluray.getIs4K() ? "Oui" : "Non");
+        } else {
+            view.showErrorMessage("Type de média non reconnu");
+            return;
         }
 
         view.showDetailsMessage(message);
