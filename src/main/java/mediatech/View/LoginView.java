@@ -18,8 +18,6 @@ import mediatech.Model.BL.User;
 public class LoginView {
     private Stage stage;
     private LoginController controller;
-    private TextField emailField;
-    private PasswordField passwordField;
 
     public LoginView(Stage stage) {
         this.stage = stage;
@@ -35,12 +33,12 @@ public class LoginView {
         Label titleLabel = new Label("Connexion");
         titleLabel.setStyle("-fx-font-size: 55px; -fx-font-weight: bold;");
 
-        emailField = new TextField();
+        TextField emailField = new TextField();
         emailField.setMaxWidth(300);
         emailField.setStyle("-fx-font-size: 18px;");
         emailField.setPromptText("Email");
 
-        passwordField = new PasswordField();
+        PasswordField passwordField = new PasswordField();
         passwordField.setMaxWidth(300); 
         passwordField.setStyle("-fx-font-size: 18px;");
         passwordField.setPromptText("Mot de passe");
@@ -58,12 +56,12 @@ public class LoginView {
 
         Button changePasswordButton = new Button("Changer de mot de passe");
         changePasswordButton.setStyle("-fx-font-size: 18px; -fx-background-color: transparent; -fx-text-fill: #555;");
-        changePasswordButton.setOnAction(e -> new ChangePasswordView(stage));
+        changePasswordButton.setOnAction(e -> openChangePasswordView());
 
         layout.getChildren().addAll(titleLabel, emailField, passwordField, spacer,loginButton, registerButton, changePasswordButton);
 
         Scene scene = new Scene(layout, 600, 600);
-        stage.setTitle("MediaTech - Connexion");
+        stage.setTitle("Connexion");
         stage.setScene(scene);
         //full screen
         stage.setWidth(javafx.stage.Screen.getPrimary().getVisualBounds().getWidth());
@@ -75,9 +73,18 @@ public class LoginView {
         new RegisterView(stage); 
     }
 
+    public void openChangePasswordView() {
+        new ChangePasswordView(stage);
+    }
+
     public void openBookingView() {
         User currentUser = controller.getCurrentUser();
         new BookingView(stage, currentUser);
+    }
+
+    public void openManagementView() {
+        User currentUser = controller.getCurrentUser();
+        new ManagementView(stage, currentUser);
     }
 
     public void showLoginSuccess() {
@@ -86,7 +93,6 @@ public class LoginView {
         alert.setHeaderText(null);
         alert.setContentText("Connexion réussie!");
         alert.showAndWait();
-        openBookingView();
     }
 
     public void showLoginError() {

@@ -27,11 +27,6 @@ public class BookingView {
     private ComboBox<Bluray> blurayComboBox;
 
     public BookingView(Stage stage, User currentUser) {
-
-        if (!"user".equals(currentUser.getRole())) {
-            return;
-        }
-
         this.stage = stage;
         this.currentUser = currentUser;
         this.controller = new BookingController(this);

@@ -21,6 +21,11 @@ public class LoginController {
         if (userDAO.login(email, password)) {
             this.currentUser = userDAO.getUser(email, password);
             view.showLoginSuccess();
+            if (currentUser.getRole().equals("user")) {
+                view.openBookingView();
+            } else if (currentUser.getRole().equals("employee")) {
+                view.openManagementView();
+            }
         } else {
             view.showLoginError();
         }
