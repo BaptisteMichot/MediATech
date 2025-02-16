@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class BlurayDAO {
     private Connection connection;
@@ -16,6 +17,8 @@ public class BlurayDAO {
     private PreparedStatement selectBlurayIdByTitle;
     private PreparedStatement updateBlurayAvailability;
     private PreparedStatement updateBlurayState;
+    private PreparedStatement insertBluray;
+    private PreparedStatement deleteBluray;
 
     public BlurayDAO(DBConnection dbConnection) {
         try {
@@ -25,6 +28,8 @@ public class BlurayDAO {
             this.selectBlurayIdByTitle = connection.prepareStatement("SELECT id FROM bluray WHERE title = ?");
             this.updateBlurayAvailability = connection.prepareStatement("UPDATE bluray SET available = ? WHERE id = ?");
             this.updateBlurayState = connection.prepareStatement("UPDATE bluray SET state = ? WHERE id = ?");
+            this.insertBluray = connection.prepareStatement("INSERT INTO bluray (title, available, state, publicationdate, is4K, duration) VALUES (?, ?, ?, ?, ?, ?)");
+            this.deleteBluray = connection.prepareStatement("DELETE FROM bluray WHERE title = ?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -100,6 +105,33 @@ public class BlurayDAO {
         }
     }
 
+    public boolean insertBluray(String title, String state, Date publicationDate, boolean is4K, int duration) {
+        try {
+            this.insertBluray.setString(1, title);
+            this.insertBluray.setBoolean(2, true);
+            this.insertBluray.setString(3, state);
+            this.insertBluray.setDate(4, new java.sql.Date(publicationDate.getTime()));
+            this.insertBluray.setBoolean(5, is4K);
+            this.insertBluray.setInt(6, duration);
+            this.insertBluray.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean deleteBluray(String title) {
+        try {
+            this.deleteBluray.setString(1, title);
+            this.deleteBluray.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     public boolean close() {
         boolean returnValue = true;
@@ -147,6 +179,22 @@ public class BlurayDAO {
         if (this.updateBlurayState != null) {
             try {
                 this.updateBlurayState.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.insertBluray != null) {
+            try {
+                this.insertBluray.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.deleteBluray != null) {
+            try {
+                this.deleteBluray.close();
             } catch (SQLException e) {
                 e.printStackTrace();
                 returnValue = false;

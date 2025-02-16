@@ -9,6 +9,7 @@ import mediatech.Model.DAL.Bluray.BlurayDAO;
 import mediatech.Model.BL.Reservation;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ManagementController {
     private ManagementView view;
@@ -110,27 +111,76 @@ public class ManagementController {
         }
     }
 
-    public void addBook(String title, String state, String publicationDate, String isbn, String author, String publisher, String pageCount) {
-
+    public void addBook(String title, String state, Date publicationDate, String isbn, String author, String publisher, int pageCount) {
+        try {
+            if (this.bookDAO.insertBook(title, state, publicationDate, isbn, author, publisher, pageCount)) {
+                view.showSuccessMessage("Le livre " + title + " a été ajouté avec succès");
+            } else {
+                view.showErrorMessage("Erreur lors de l'ajout du livre");
+            }
+        } catch (Exception e) {
+            view.showErrorMessage("Erreur lors de l'ajout du livre");
+        }
     }
 
     public void deleteBook(String title) {
-
+        try {
+            if (this.bookDAO.deleteBook(title)) {
+                view.showSuccessMessage("Le livre " + title + " a été supprimé avec succès");
+            } else {
+                view.showErrorMessage("Erreur lors de la suppression du livre");
+            }
+        } catch (Exception e) {
+            view.showErrorMessage("Erreur lors de la suppression du livre");
+        }
     }
 
-    public void addDVD(String title, String state, String publicationDate, String duration) {
-
+    public void addDVD(String title, String state, Date publicationDate, int duration) {
+        try {
+            if (this.dvdDAO.insertDVD(title, state, publicationDate, duration)) {
+                view.showSuccessMessage("Le DVD " + title + " a été ajouté avec succès");
+            } else {
+                view.showErrorMessage("Erreur lors de l'ajout du DVD");
+            }
+        } catch (Exception e) {
+            view.showErrorMessage("Erreur lors de l'ajout du DVD");
+        }
     }
 
     public void deleteDVD(String title) {
-
+        try {
+            if (this.dvdDAO.deleteDVD(title)) {
+                view.showSuccessMessage("Le DVD " + title + " a été supprimé avec succès");
+            } else {
+                view.showErrorMessage("Erreur lors de la suppression du DVD");
+            }
+        } catch (Exception e) {
+            view.showErrorMessage("Erreur lors de la suppression du DVD");
+        }
     }
 
-    public void addBluray(String title, String state, String publicationDate, String is4K, String duration) {
-
+    public void addBluray(String title, String state, Date publicationDate, boolean is4K, int duration) {
+        try {
+            if (this.blurayDAO.insertBluray(title, state, publicationDate, is4K, duration)) {
+                view.showSuccessMessage("Le Bluray " + title + " a été ajouté avec succès");
+            } else {
+                view.showErrorMessage("Erreur lors de l'ajout du Bluray");
+            }
+        } catch (Exception e) {
+            view.showErrorMessage("Erreur lors de l'ajout du Bluray");
+        }
     }
 
     public void deleteBluray(String title) {
-
+        try {
+            if (this.blurayDAO.deleteBluray(title)) {
+                view.showSuccessMessage("Le Bluray " + title + " a été supprimé avec succès");
+            } else {
+                view.showErrorMessage("Erreur lors de la suppression du Bluray");
+            }
+        } catch (Exception e) {
+            view.showErrorMessage("Erreur lors de la suppression du Bluray");
+        }
     }
 }
+

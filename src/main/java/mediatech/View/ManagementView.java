@@ -8,8 +8,10 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.CheckBox;
 import mediatech.Model.BL.User;
 import mediatech.Controller.ManagementController;
 
@@ -116,7 +118,7 @@ public class ManagementView {
         stateField.setStyle("-fx-font-size: 15px;");
         stateField.setPromptText("Etat");
 
-        TextField publicationDateField = new TextField();
+        DatePicker publicationDateField = new DatePicker();
         publicationDateField.setMaxWidth(300);
         publicationDateField.setStyle("-fx-font-size: 15px;");
         publicationDateField.setPromptText("Date de publication");
@@ -143,8 +145,8 @@ public class ManagementView {
 
         Button addButton = new Button("Ajouter");
         addButton.setStyle("-fx-font-size: 15px; -fx-background-color: #1ab2d1; -fx-text-fill: white;");
-        addButton.setOnAction(e -> controller.addBook(titleField.getText(), stateField.getText(), publicationDateField.getText(), 
-            isbnField.getText(), authorField.getText(), publisherField.getText(), pageCountField.getText()));
+        addButton.setOnAction(e -> controller.addBook(titleField.getText(), stateField.getText(), java.sql.Date.valueOf(publicationDateField.getValue()), 
+            isbnField.getText(), authorField.getText(), publisherField.getText(), Integer.parseInt(pageCountField.getText())));
         
         HBox hbox = new HBox(10, titleField, stateField, publicationDateField, isbnField, authorField, publisherField, pageCountField, addButton);
         hbox.setAlignment(Pos.TOP_LEFT);
@@ -189,7 +191,7 @@ public class ManagementView {
         stateField.setStyle("-fx-font-size: 15px;");
         stateField.setPromptText("Etat");
 
-        TextField publicationDateField = new TextField();
+        DatePicker publicationDateField = new DatePicker();
         publicationDateField.setMaxWidth(300);
         publicationDateField.setStyle("-fx-font-size: 15px;");
         publicationDateField.setPromptText("Date de publication");
@@ -201,7 +203,8 @@ public class ManagementView {
 
         Button addButton = new Button("Ajouter");
         addButton.setStyle("-fx-font-size: 15px; -fx-background-color: #1ab2d1; -fx-text-fill: white;");
-        addButton.setOnAction(e -> controller.addDVD(titleField.getText(), stateField.getText(), publicationDateField.getText(), durationField.getText()));
+        addButton.setOnAction(e -> controller.addDVD(titleField.getText(), stateField.getText(), 
+            java.sql.Date.valueOf(publicationDateField.getValue()), Integer.parseInt(durationField.getText())));
         
         HBox hbox = new HBox(10, titleField, stateField, publicationDateField, durationField, addButton);
         hbox.setAlignment(Pos.TOP_LEFT);
@@ -246,15 +249,14 @@ public class ManagementView {
         stateField.setStyle("-fx-font-size: 15px;");
         stateField.setPromptText("Etat");
 
-        TextField publicationDateField = new TextField();
+        DatePicker publicationDateField = new DatePicker();
         publicationDateField.setMaxWidth(300);
         publicationDateField.setStyle("-fx-font-size: 15px;");
         publicationDateField.setPromptText("Date de publication");
 
-        TextField is4KField = new TextField();
+        CheckBox is4KField = new CheckBox();
         is4KField.setMaxWidth(300);
         is4KField.setStyle("-fx-font-size: 15px;");
-        is4KField.setPromptText("4K ?");
 
         TextField durationField = new TextField();
         durationField.setMaxWidth(300);
@@ -263,7 +265,8 @@ public class ManagementView {
 
         Button addButton = new Button("Ajouter");
         addButton.setStyle("-fx-font-size: 15px; -fx-background-color: #1ab2d1; -fx-text-fill: white;");
-        addButton.setOnAction(e -> controller.addBluray(titleField.getText(), stateField.getText(), publicationDateField.getText(), is4KField.getText(), durationField.getText()));
+        addButton.setOnAction(e -> controller.addBluray(titleField.getText(), stateField.getText(), 
+            java.sql.Date.valueOf(publicationDateField.getValue()), is4KField.isSelected(), Integer.parseInt(durationField.getText())));
 
         HBox hbox = new HBox(10, titleField, stateField, publicationDateField, is4KField, durationField, addButton);
         hbox.setAlignment(Pos.TOP_LEFT);

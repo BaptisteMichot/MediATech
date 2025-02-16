@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class BookDAO {
     private Connection connection;
@@ -16,6 +17,8 @@ public class BookDAO {
     private PreparedStatement selectBookIdByTitle;
     private PreparedStatement updateBookAvailability;
     private PreparedStatement updateBookState;
+    private PreparedStatement insertBook;
+    private PreparedStatement deleteBook;
 
     public BookDAO(DBConnection dbConnection) {
         try {
@@ -25,6 +28,9 @@ public class BookDAO {
             this.selectBookIdByTitle = connection.prepareStatement("SELECT id FROM book WHERE title = ?");
             this.updateBookAvailability = connection.prepareStatement("UPDATE book SET available = ? WHERE id = ?");
             this.updateBookState = connection.prepareStatement("UPDATE book SET state = ? WHERE id = ?");
+            this.insertBook = connection.prepareStatement("INSERT INTO book (title, available, state, publicationdate, isbn, " +
+                "author, publisher, pagecount) VALUES (?, ?, ?, ?, ?, ?, ?, ? )");
+            this.deleteBook = connection.prepareStatement("DELETE FROM book WHERE title = ?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -100,6 +106,37 @@ public class BookDAO {
         return true;
     }
 
+    public boolean insertBook(String title, String state, Date publicationDate, String isbn, 
+        String author, String publisher, int pageCount) {
+
+        try {
+            this.insertBook.setString(1, title);
+            this.insertBook.setBoolean(2, true);
+            this.insertBook.setString(3, state);
+            this.insertBook.setDate(4, new java.sql.Date(publicationDate.getTime()));
+            this.insertBook.setString(5, isbn);
+            this.insertBook.setString(6, author);
+            this.insertBook.setString(7, publisher);
+            this.insertBook.setInt(8, pageCount);
+            this.insertBook.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean deleteBook(String title) {
+        try {
+            this.deleteBook.setString(1, title);
+            this.deleteBook.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
 
     public boolean close() {
         boolean returnValue = true;
@@ -147,6 +184,22 @@ public class BookDAO {
         if (this.updateBookState != null) {
             try {
                 this.updateBookState.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.insertBook != null) {
+            try {
+                this.insertBook.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.deleteBook != null) {
+            try {
+                this.deleteBook.close();
             } catch (SQLException e) {
                 e.printStackTrace();
                 returnValue = false;

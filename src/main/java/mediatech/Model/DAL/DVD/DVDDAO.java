@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DVDDAO {
     private Connection connection;
@@ -16,6 +17,8 @@ public class DVDDAO {
     private PreparedStatement selectDVDIdByTitle;
     private PreparedStatement updateDVDAvailability;
     private PreparedStatement updateDVDState;
+    private PreparedStatement insertDVD;
+    private PreparedStatement deleteDVD;
 
     public DVDDAO(DBConnection dbConnection) {
         try {
@@ -25,6 +28,8 @@ public class DVDDAO {
             this.selectDVDIdByTitle = connection.prepareStatement("SELECT id FROM dvd WHERE title = ?");
             this.updateDVDAvailability = connection.prepareStatement("UPDATE dvd SET available = ? WHERE id = ?");
             this.updateDVDState = connection.prepareStatement("UPDATE dvd SET state = ? WHERE id = ?");
+            this.insertDVD = connection.prepareStatement("INSERT INTO dvd (title, available, state, publicationdate, duration) VALUES (?, ?, ?, ?, ?)");
+            this.deleteDVD = connection.prepareStatement("DELETE FROM dvd WHERE title = ?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -103,6 +108,32 @@ public class DVDDAO {
         return true;    
     }
 
+    public boolean insertDVD(String title, String state, Date publicationDate, int duration) {
+        try {
+            this.insertDVD.setString(1, title);
+            this.insertDVD.setBoolean(2, true);
+            this.insertDVD.setString(3, state);
+            this.insertDVD.setDate(4, new java.sql.Date(publicationDate.getTime()));
+            this.insertDVD.setInt(5, duration);
+            this.insertDVD.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean deleteDVD(String title) {
+        try {
+            this.deleteDVD.setString(1, title);
+            this.deleteDVD.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
 
     public boolean close() {
         boolean returnValue = true;
@@ -150,6 +181,22 @@ public class DVDDAO {
         if (this.updateDVDState != null) {
             try {
                 this.updateDVDState.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.insertDVD != null) {
+            try {
+                this.insertDVD.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.deleteDVD != null) {
+            try {
+                this.deleteDVD.close();
             } catch (SQLException e) {
                 e.printStackTrace();
                 returnValue = false;
