@@ -13,12 +13,18 @@ public class BookDAO {
     private Connection connection;
     private PreparedStatement selectAvailableBooks;
     private PreparedStatement selectBookTitleById;
+    private PreparedStatement selectBookIdByTitle;
+    private PreparedStatement updateBookAvailability;
+    private PreparedStatement updateBookState;
 
     public BookDAO(DBConnection dbConnection) {
         try {
             this.connection = dbConnection.getConnection();
             this.selectAvailableBooks = connection.prepareStatement("SELECT * FROM book WHERE available = true");
             this.selectBookTitleById = connection.prepareStatement("SELECT title FROM book WHERE id = ?");
+            this.selectBookIdByTitle = connection.prepareStatement("SELECT id FROM book WHERE title = ?");
+            this.updateBookAvailability = connection.prepareStatement("UPDATE book SET available = ? WHERE id = ?");
+            this.updateBookState = connection.prepareStatement("UPDATE book SET state = ? WHERE id = ?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -56,6 +62,44 @@ public class BookDAO {
         return title;
     }
 
+    public int getBookIdByTitle(String title) {
+        int id = -1;
+        try {            
+            this.selectBookIdByTitle.setString(1, title);
+            ResultSet set = this.selectBookIdByTitle.executeQuery();
+            if (set.next()) {
+                id = set.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
+    public boolean updateBookAvailability(int id, boolean availability) {
+        try {
+            this.updateBookAvailability.setBoolean(1, availability);
+            this.updateBookAvailability.setInt(2, id);
+            this.updateBookAvailability.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean updateBookState(int id, String state) {
+        try {
+            this.updateBookState.setString(1, state);
+            this.updateBookState.setInt(2, id);
+            this.updateBookState.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
 
     public boolean close() {
         boolean returnValue = true;
@@ -79,6 +123,30 @@ public class BookDAO {
         if (this.selectBookTitleById != null) {
             try {
                 this.selectBookTitleById.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.selectBookIdByTitle != null) {
+            try {
+                this.selectBookIdByTitle.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.updateBookAvailability != null) {
+            try {
+                this.updateBookAvailability.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.updateBookState != null) {
+            try {
+                this.updateBookState.close();
             } catch (SQLException e) {
                 e.printStackTrace();
                 returnValue = false;

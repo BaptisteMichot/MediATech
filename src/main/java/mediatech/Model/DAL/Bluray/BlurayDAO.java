@@ -13,12 +13,18 @@ public class BlurayDAO {
     private Connection connection;
     private PreparedStatement selectAvailableBlurays;
     private PreparedStatement selectBlurayTitleById;
+    private PreparedStatement selectBlurayIdByTitle;
+    private PreparedStatement updateBlurayAvailability;
+    private PreparedStatement updateBlurayState;
 
     public BlurayDAO(DBConnection dbConnection) {
         try {
             this.connection = dbConnection.getConnection();
             this.selectAvailableBlurays = connection.prepareStatement("SELECT * FROM bluray WHERE available = true");
             this.selectBlurayTitleById = connection.prepareStatement("SELECT title FROM bluray WHERE id = ?");
+            this.selectBlurayIdByTitle = connection.prepareStatement("SELECT id FROM bluray WHERE title = ?");
+            this.updateBlurayAvailability = connection.prepareStatement("UPDATE bluray SET available = ? WHERE id = ?");
+            this.updateBlurayState = connection.prepareStatement("UPDATE bluray SET state = ? WHERE id = ?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -56,6 +62,44 @@ public class BlurayDAO {
         return title;
     }
 
+    public int getBlurayIdByTitle(String title) {
+        int id = -1;
+        try {            
+            this.selectBlurayIdByTitle.setString(1, title);
+            ResultSet set = this.selectBlurayIdByTitle.executeQuery();
+            if (set.next()) {
+                id = set.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
+    public boolean updateBlurayAvailability(int id, boolean availability) {
+        try {
+            this.updateBlurayAvailability.setBoolean(1, availability);
+            this.updateBlurayAvailability.setInt(2, id);
+            this.updateBlurayAvailability.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateBlurayState(int id, String state) {
+        try {
+            this.updateBlurayState.setString(1, state);
+            this.updateBlurayState.setInt(2, id);
+            this.updateBlurayState.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     public boolean close() {
         boolean returnValue = true;
@@ -79,6 +123,30 @@ public class BlurayDAO {
         if (this.selectBlurayTitleById != null) {
             try {
                 this.selectBlurayTitleById.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.selectBlurayIdByTitle != null) {
+            try {
+                this.selectBlurayIdByTitle.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.updateBlurayAvailability != null) {
+            try {
+                this.updateBlurayAvailability.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.updateBlurayState != null) {
+            try {
+                this.updateBlurayState.close();
             } catch (SQLException e) {
                 e.printStackTrace();
                 returnValue = false;

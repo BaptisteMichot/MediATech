@@ -64,12 +64,50 @@ public class ManagementController {
         }
     }
 
-    public void endOfReservation(String lastName, String firstName, String mediaType, String title) {
-
-    }
-
     public void restocking(String mediaType, String title, String state) {
+        int mediaId = -1;
+        boolean updateSuccessful = false;
+        String message ="";
 
+        switch (mediaType) {
+            case "book":
+                mediaId = this.bookDAO.getBookIdByTitle(title);
+                if (mediaId != -1) {
+                    this.bookDAO.updateBookState(mediaId, state);
+                    this.bookDAO.updateBookAvailability(mediaId, true);
+                    updateSuccessful = true;
+                    message = "livre";
+                }
+                break;
+            case "dvd":
+                mediaId = this.dvdDAO.getDVDIdByTitle(title);
+                if (mediaId != -1) {
+                    this.dvdDAO.updateDVDState(mediaId, state);
+                    this.dvdDAO.updateDVDAvailability(mediaId, true);
+                    updateSuccessful = true;
+                    message = "DVD";
+                }
+                break;
+            case "bluray":
+                mediaId = this.blurayDAO.getBlurayIdByTitle(title);
+                if (mediaId != -1) {
+                    this.blurayDAO.updateBlurayState(mediaId, state);
+                    this.blurayDAO.updateBlurayAvailability(mediaId, true);
+                    updateSuccessful = true;
+                    message = "bluray";
+                }
+                break;
+            default:
+                view.showErrorMessage("Média non reconnu");
+                return;
+        }
+    
+        if (updateSuccessful) {
+            this.reservationDAO.deleteReservation(mediaType, mediaId);
+            view.showSuccessMessage("Le " + message + " " + title + " a été remis en stock avec succès");
+        } else {
+            view.showErrorMessage("Média non reconnu");
+        }
     }
 
     public void addBook(String title, String state, String publicationDate, String isbn, String author, String publisher, String pageCount) {

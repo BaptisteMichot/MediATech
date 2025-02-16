@@ -29,7 +29,6 @@ public class ManagementView {
         layout.setAlignment(Pos.CENTER);
 
         showReservations();
-        endOfReservation();
         restocking();
         addBook();
         deleteBook();
@@ -38,7 +37,7 @@ public class ManagementView {
         addBluray();
         deleteBluray();
 
-        layout.getChildren().addAll(showReservations(), endOfReservation(), restocking(), addBook(), deleteBook(), addDVD(), deleteDVD(), addBluray(), deleteBluray());
+        layout.getChildren().addAll(showReservations(), restocking(), addBook(), deleteBook(), addDVD(), deleteDVD(), addBluray(), deleteBluray());
 
         Scene scene = new Scene(layout, 600, 600);
         stage.setTitle("Gestion de la médiathèque");
@@ -65,42 +64,6 @@ public class ManagementView {
         showReservationsButton.setOnAction(e -> controller.showReservations(lastNameField.getText(), firstNameField.getText()));
 
         HBox hbox = new HBox(10, lastNameField, firstNameField, showReservationsButton);
-        hbox.setAlignment(Pos.TOP_LEFT);        
-        VBox vbox = new VBox(20, label, hbox);
-        vbox.setAlignment(Pos.TOP_LEFT);
-
-        return vbox;
-    }
-
-    private VBox endOfReservation() {
-        Label label = new Label("Fin de réservation");
-        label.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
-
-        TextField lastNameField = new TextField();
-        lastNameField.setMaxWidth(300);
-        lastNameField.setStyle("-fx-font-size: 15px;");
-        lastNameField.setPromptText("Nom");
-
-        TextField firstNameField = new TextField();
-        firstNameField.setMaxWidth(300);
-        firstNameField.setStyle("-fx-font-size: 15px;");
-        firstNameField.setPromptText("Prénom");
-
-        TextField mediaTypeField = new TextField();
-        mediaTypeField.setMaxWidth(300);
-        mediaTypeField.setStyle("-fx-font-size: 15px;");
-        mediaTypeField.setPromptText("Type de média");
-
-        TextField titleField = new TextField();
-        titleField.setMaxWidth(300);
-        titleField.setStyle("-fx-font-size: 15px;");
-        titleField.setPromptText("Titre");
-
-        Button endOfReservationButton = new Button("Valider");
-        endOfReservationButton.setStyle("-fx-font-size: 15px; -fx-background-color: #1ab2d1; -fx-text-fill: white;");
-        endOfReservationButton.setOnAction(e -> controller.endOfReservation(lastNameField.getText(), firstNameField.getText(), mediaTypeField.getText(), titleField.getText()));
-
-        HBox hbox = new HBox(10, lastNameField, firstNameField, mediaTypeField, titleField, endOfReservationButton);
         hbox.setAlignment(Pos.TOP_LEFT);        
         VBox vbox = new VBox(20, label, hbox);
         vbox.setAlignment(Pos.TOP_LEFT);
@@ -337,6 +300,14 @@ public class ManagementView {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public void showSuccessMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Succès");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.show();
     }
 
     public void showErrorMessage(String message) {

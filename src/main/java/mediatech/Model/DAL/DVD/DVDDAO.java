@@ -13,12 +13,18 @@ public class DVDDAO {
     private Connection connection;
     private PreparedStatement selectAvailableDVDs;
     private PreparedStatement selectDVDTitleById;
+    private PreparedStatement selectDVDIdByTitle;
+    private PreparedStatement updateDVDAvailability;
+    private PreparedStatement updateDVDState;
 
     public DVDDAO(DBConnection dbConnection) {
         try {
             this.connection = dbConnection.getConnection();
             this.selectAvailableDVDs = connection.prepareStatement("SELECT * FROM dvd WHERE available = true");
             this.selectDVDTitleById = connection.prepareStatement("SELECT title FROM dvd WHERE id = ?");
+            this.selectDVDIdByTitle = connection.prepareStatement("SELECT id FROM dvd WHERE title = ?");
+            this.updateDVDAvailability = connection.prepareStatement("UPDATE dvd SET available = ? WHERE id = ?");
+            this.updateDVDState = connection.prepareStatement("UPDATE dvd SET state = ? WHERE id = ?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -57,6 +63,47 @@ public class DVDDAO {
     }
 
 
+    public int getDVDIdByTitle(String title) {
+        int id = -1;
+        try {            
+            this.selectDVDIdByTitle.setString(1, title);
+            ResultSet set = this.selectDVDIdByTitle.executeQuery();
+            if (set.next()) {
+                id = set.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
+
+    public boolean updateDVDAvailability(int id, boolean availability) {
+        try {
+            this.updateDVDAvailability.setBoolean(1, availability);
+            this.updateDVDAvailability.setInt(2, id);
+            this.updateDVDAvailability.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+
+    public boolean updateDVDState(int id, String state) {
+        try {
+            this.updateDVDState.setString(1, state);
+            this.updateDVDState.setInt(2, id);
+            this.updateDVDState.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;    
+    }
+
+
     public boolean close() {
         boolean returnValue = true;
 
@@ -79,6 +126,30 @@ public class DVDDAO {
         if (this.selectDVDTitleById != null) {
             try {
                 this.selectDVDTitleById.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.selectDVDIdByTitle != null) {
+            try {
+                this.selectDVDIdByTitle.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.updateDVDAvailability != null) {
+            try {
+                this.updateDVDAvailability.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.updateDVDState != null) {
+            try {
+                this.updateDVDState.close();
             } catch (SQLException e) {
                 e.printStackTrace();
                 returnValue = false;

@@ -82,6 +82,17 @@ public class BookingController {
 
         if (reservationDAO.addReservation(reservation)) {
             view.showSuccessMessage(message + mediaObject.getTitle() + " a bien été réservé");
+            switch (reservation.getMediaType()) {
+                case "book":
+                    bookDAO.updateBookAvailability(reservation.getIdMedia(), false);
+                    break;
+                case "dvd":
+                    dvdDAO.updateDVDAvailability(reservation.getIdMedia(), false);
+                    break;
+                case "bluray":
+                    blurayDAO.updateBlurayAvailability(reservation.getIdMedia(), false);
+                    break;
+            }
         } else {
             view.showErrorMessage("Vous avez déjà réservé " + mediaObject.getTitle());
         }
