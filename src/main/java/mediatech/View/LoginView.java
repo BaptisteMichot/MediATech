@@ -49,11 +49,11 @@ public class LoginView {
         spacer.setMinHeight(20);
 
         Button loginButton = new Button("Se connecter");
-        loginButton.setStyle("-fx-font-size: 25px; -fx-background-color: #4CAF50; -fx-text-fill: white;");
+        loginButton.setStyle("-fx-font-size: 25px; -fx-background-color: #1cb84c; -fx-text-fill: white;");
         loginButton.setOnAction(e -> controller.handleLogin(emailField.getText(), passwordField.getText()));
 
         Button registerButton = new Button("S'inscrire");
-        registerButton.setStyle("-fx-font-size: 25px; -fx-background-color: #2196F3; -fx-text-fill: white;");
+        registerButton.setStyle("-fx-font-size: 25px; -fx-background-color: #1ab2d1; -fx-text-fill: white;");
         registerButton.setOnAction(e -> openRegisterView());
 
         Button changePasswordButton = new Button("Changer de mot de passe");

@@ -58,13 +58,13 @@ public class BookingController {
         //on détermine le type de MeidaObject sélectionné
         if (mediaObject instanceof Book) {
             mediaType = "book";
-            message = "Le livre";
+            message = "Le livre ";
         } else if (mediaObject instanceof DVD) {
             mediaType = "dvd";
-            message = "Le DVD";
+            message = "Le DVD ";
         } else if (mediaObject instanceof Bluray) {
             mediaType = "bluray";
-            message = "Le bluray";
+            message = "Le bluray ";
         } else {
             view.showErrorMessage("Type de média non reconnu");
             return;
@@ -81,9 +81,33 @@ public class BookingController {
             mediaType, reservationDate, expirationDate, true);
 
         if (reservationDAO.addReservation(reservation)) {
-            view.showSuccessMessage(message + " a bien été réservé");
+            view.showSuccessMessage(message + mediaObject.getTitle() + " a bien été réservé");
         } else {
-            view.showErrorMessage("Vous avez déjà réservé ce média");
+            view.showErrorMessage("Vous avez déjà réservé " + mediaObject.getTitle());
         }
     }
+
+    public void showMediaObjectDetails(MediaObject mediaObject) {
+        String message;
+
+        if (mediaObject == null) {
+            view.showErrorMessage("Vous n'avez rien sélectionné");
+            return;
+        }
+
+        message = "Titre: " + mediaObject.getTitle() + "\nÉtat: " + mediaObject.getState() +
+            "\nDate de publication: " + mediaObject.getPublicationDate();
+
+        if (mediaObject instanceof Book book) {
+            message += "\nISBN: " + book.getIsbn() + "\nAuteur: " + book.getAuthor() + "\n" +
+                "Éditeur: " + book.getPublisher() + "\nNombre de pages: " + book.getPageCount();
+        } else if (mediaObject instanceof DVD dvd) {
+            message += "\nDurée: " + dvd.getDuration() + " minutes";
+        } else if (mediaObject instanceof Bluray bluray) {
+            message += "\nDurée: " + bluray.getDuration() + " minutes\n4K: " + (bluray.getIs4K() ? "Oui" : "Non");
+        }
+
+        view.showDetailsMessage(message);
+    }
+
 }

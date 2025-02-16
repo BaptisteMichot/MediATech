@@ -54,11 +54,11 @@ public class ChangePasswordView {
         spacer.setMinHeight(20);
 
         Button changePasswordButton = new Button("Changer le mot de passe");
-        changePasswordButton.setStyle("-fx-font-size: 25px; -fx-background-color: #4CAF50; -fx-text-fill: white;");
+        changePasswordButton.setStyle("-fx-font-size: 25px; -fx-background-color: #1cb84c; -fx-text-fill: white;");
         changePasswordButton.setOnAction(e -> controller.handleChangePassword(emailField.getText(), currentPasswordField.getText(), newPasswordField.getText()));
 
         Button goBackButton = new Button("Retour");
-        goBackButton.setStyle("-fx-font-size: 25px; -fx-background-color: #2196F3; -fx-text-fill: white;");
+        goBackButton.setStyle("-fx-font-size: 25px; -fx-background-color: #1ab2d1; -fx-text-fill: white;");
         goBackButton.setOnAction(e -> returnToLoginView());
 
         layout.getChildren().addAll(titleLabel, emailField, currentPasswordField, newPasswordField, spacer, changePasswordButton, goBackButton);

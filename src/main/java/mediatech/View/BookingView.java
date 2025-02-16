@@ -61,18 +61,24 @@ public class BookingView {
         label.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         comboBox.setPrefWidth(200);
+
         Button reserve = new Button("Réserver");
-        reserve.setStyle("-fx-font-size: 20px; -fx-background-color: #2196F3; -fx-text-fill: white;");
+        reserve.setStyle("-fx-font-size: 20px; -fx-background-color: #1cb84c; -fx-text-fill: white;");
+        Button details = new Button("Détails");
+        details.setStyle("-fx-font-size: 20px; -fx-background-color: #1ab2d1; -fx-text-fill: white;");
 
         if (comboBox == bookComboBox) {
             reserve.setOnAction(e -> controller.addMediaObject(bookComboBox.getValue()));
+            details.setOnAction(e -> controller.showMediaObjectDetails(bookComboBox.getValue()));
         }else if (comboBox == dvdComboBox) {
             reserve.setOnAction(e -> controller.addMediaObject(dvdComboBox.getValue()));
+            details.setOnAction(e -> controller.showMediaObjectDetails(dvdComboBox.getValue()));
         }else if (comboBox == blurayComboBox) {
             reserve.setOnAction(e -> controller.addMediaObject(blurayComboBox.getValue()));
+            details.setOnAction(e -> controller.showMediaObjectDetails(blurayComboBox.getValue()));
         } 
 
-        HBox hbox = new HBox(10, comboBox, reserve);
+        HBox hbox = new HBox(10, comboBox, reserve, details);
         hbox.setAlignment(Pos.CENTER);
 
         VBox vbox = new VBox(10, label, hbox);
@@ -96,6 +102,14 @@ public class BookingView {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.show();
+    }
+
+    public void showDetailsMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Détails");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     public User getCurrentUser() {
