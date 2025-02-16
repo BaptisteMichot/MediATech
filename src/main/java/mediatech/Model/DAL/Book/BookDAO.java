@@ -12,13 +12,13 @@ import java.util.ArrayList;
 public class BookDAO {
     private Connection connection;
     private PreparedStatement selectAvailableBooks;
-    private PreparedStatement selectBookByTitle;
+    private PreparedStatement selectBookTitleById;
 
     public BookDAO(DBConnection dbConnection) {
         try {
             this.connection = dbConnection.getConnection();
             this.selectAvailableBooks = connection.prepareStatement("SELECT * FROM book WHERE available = true");
-            this.selectBookByTitle = connection.prepareStatement("SELECT * FROM book WHERE title = ?");
+            this.selectBookTitleById = connection.prepareStatement("SELECT title FROM book WHERE id = ?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -42,22 +42,18 @@ public class BookDAO {
     }
 
 
-    //@Override
-    public Book getBookByTitle(String title) {
-        try {
-            this.selectBookByTitle.setString(1, title);
-            ResultSet set = this.selectBookByTitle.executeQuery();
-
+    public String getBookTitleById(int id) {
+        String title = "";
+        try {            
+            this.selectBookTitleById.setInt(1, id);
+            ResultSet set = this.selectBookTitleById.executeQuery();
             if (set.next()) {
-                Book book = new Book(set.getInt(1), set.getString(2), set.getBoolean(3), set.getString(4), 
-                    set.getDate(5), set.getString(6), set.getString(7), set.getString(8), set.getInt(9));
-                return book;
+                title = set.getString(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println(title + " not found");
-        return null;
+        return title;
     }
 
 
@@ -80,9 +76,9 @@ public class BookDAO {
                 returnValue = false;
             }
         }
-        if (this.selectBookByTitle != null) {
+        if (this.selectBookTitleById != null) {
             try {
-                this.selectBookByTitle.close();
+                this.selectBookTitleById.close();
             } catch (SQLException e) {
                 e.printStackTrace();
                 returnValue = false;

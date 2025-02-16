@@ -12,13 +12,13 @@ import java.util.ArrayList;
 public class BlurayDAO {
     private Connection connection;
     private PreparedStatement selectAvailableBlurays;
-    private PreparedStatement selectBlurayByTitle;
+    private PreparedStatement selectBlurayTitleById;
 
     public BlurayDAO(DBConnection dbConnection) {
         try {
             this.connection = dbConnection.getConnection();
             this.selectAvailableBlurays = connection.prepareStatement("SELECT * FROM bluray WHERE available = true");
-            this.selectBlurayByTitle = connection.prepareStatement("SELECT * FROM bluray WHERE title = ?");
+            this.selectBlurayTitleById = connection.prepareStatement("SELECT title FROM bluray WHERE id = ?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -42,22 +42,18 @@ public class BlurayDAO {
     }
 
 
-    //@Override
-    public Bluray getBlurayByTitle(String title) {
-        try {
-            this.selectBlurayByTitle.setString(1, title);
-            ResultSet set = this.selectBlurayByTitle.executeQuery();
-
+    public String getBlurayTitleById(int id) {
+        String title = "";
+        try {            
+            this.selectBlurayTitleById.setInt(1, id);
+            ResultSet set = this.selectBlurayTitleById.executeQuery();
             if (set.next()) {
-                Bluray bluray = new Bluray(set.getInt(1), set.getString(2), set.getBoolean(3), 
-                set.getString(4), set.getDate(5), set.getBoolean(6), set.getInt(7));
-                return bluray;
+                title = set.getString(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println(title + " not found");
-        return null;
+        return title;
     }
 
 
@@ -80,9 +76,9 @@ public class BlurayDAO {
                 returnValue = false;
             }
         }
-        if (this.selectBlurayByTitle != null) {
+        if (this.selectBlurayTitleById != null) {
             try {
-                this.selectBlurayByTitle.close();
+                this.selectBlurayTitleById.close();
             } catch (SQLException e) {
                 e.printStackTrace();
                 returnValue = false;

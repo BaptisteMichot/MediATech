@@ -5,7 +5,9 @@ import mediatech.Model.DAL.DBConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ReservationDAO {
     private Connection connection;
@@ -13,6 +15,7 @@ public class ReservationDAO {
     private PreparedStatement updateBookAvailability;
     private PreparedStatement updateDVDAvailability;
     private PreparedStatement updateBlurayAvailability;
+    private PreparedStatement selectReservations;
 
     public ReservationDAO(DBConnection dbConnection) {
         try {
@@ -22,6 +25,9 @@ public class ReservationDAO {
             this.updateBookAvailability = connection.prepareStatement("UPDATE book SET available = ? WHERE id = ?");
             this.updateDVDAvailability = connection.prepareStatement("UPDATE dvd SET available = ? WHERE id = ?");
             this.updateBlurayAvailability = connection.prepareStatement("UPDATE bluray SET available = ? WHERE id = ?");
+            this.selectReservations = connection.prepareStatement("SELECT reservation.mediaType, reservation.id_media, users.id, " +
+                "reservation.reservationDate, reservation.expirationDate, reservation.active FROM reservation reservation " + 
+                "JOIN Users users ON reservation.id_user = users.id WHERE users.lastname = ? AND users.firstname = ? AND reservation.active = ?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -58,6 +64,24 @@ public class ReservationDAO {
             return false;
         }
         return true;
+    }
+
+    public ArrayList<Reservation> selectReservations(String lastName, String firstName) {
+        ArrayList<Reservation> reservationsList = new ArrayList<Reservation>();
+        try {
+            this.selectReservations.setString(1, lastName);
+            this.selectReservations.setString(2, firstName);
+            this.selectReservations.setBoolean(3, true);
+            ResultSet set = this.selectReservations.executeQuery();
+            while (set.next()) {
+                Reservation reservation = new Reservation(set.getInt(2), set.getInt(3), set.getString(1), 
+                    set.getDate(4), set.getDate(5), set.getBoolean(6));
+                reservationsList.add(reservation);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reservationsList;
     }
 
 

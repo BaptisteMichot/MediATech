@@ -6,6 +6,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -14,12 +15,10 @@ import mediatech.Controller.ManagementController;
 
 public class ManagementView {
     private Stage stage;
-    private User currentUser;
     private ManagementController controller;
 
     public ManagementView(Stage stage, User currentUser) {
         this.stage = stage;
-        this.currentUser = currentUser;
         this.controller = new ManagementController(this);
         initView();
     }
@@ -330,5 +329,21 @@ public class ManagementView {
         vbox.setAlignment(Pos.TOP_LEFT);
 
         return vbox;
+    }
+
+    public void showReservationsPopup(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Réservations en cours");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    public void showErrorMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

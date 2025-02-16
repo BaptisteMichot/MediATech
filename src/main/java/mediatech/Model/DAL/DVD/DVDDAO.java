@@ -12,13 +12,13 @@ import java.util.ArrayList;
 public class DVDDAO {
     private Connection connection;
     private PreparedStatement selectAvailableDVDs;
-    private PreparedStatement selectDVDByTitle;
+    private PreparedStatement selectDVDTitleById;
 
     public DVDDAO(DBConnection dbConnection) {
         try {
             this.connection = dbConnection.getConnection();
             this.selectAvailableDVDs = connection.prepareStatement("SELECT * FROM dvd WHERE available = true");
-            this.selectDVDByTitle = connection.prepareStatement("SELECT * FROM dvd WHERE title = ?");
+            this.selectDVDTitleById = connection.prepareStatement("SELECT title FROM dvd WHERE id = ?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -42,23 +42,20 @@ public class DVDDAO {
     }
 
 
-    //@Override
-    public DVD getDVDByTitle(String title) {
-        try {
-            this.selectDVDByTitle.setString(1, title);
-            ResultSet set = this.selectDVDByTitle.executeQuery();
-
+    public String getDVDTitleById(int id) {
+        String title = "";
+        try {            
+            this.selectDVDTitleById.setInt(1, id);
+            ResultSet set = this.selectDVDTitleById.executeQuery();
             if (set.next()) {
-                DVD DVD = new DVD(set.getInt(1), set.getString(2), set.getBoolean(3), 
-                    set.getString(4), set.getDate(5), set.getInt(6));
-                return DVD;
+                title = set.getString(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println(title + " not found");
-        return null;
+        return title;
     }
+
 
     public boolean close() {
         boolean returnValue = true;
@@ -79,9 +76,9 @@ public class DVDDAO {
                 returnValue = false;
             }
         }
-        if (this.selectDVDByTitle != null) {
+        if (this.selectDVDTitleById != null) {
             try {
-                this.selectDVDByTitle.close();
+                this.selectDVDTitleById.close();
             } catch (SQLException e) {
                 e.printStackTrace();
                 returnValue = false;
