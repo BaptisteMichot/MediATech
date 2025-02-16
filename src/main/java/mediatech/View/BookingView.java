@@ -60,7 +60,7 @@ public class BookingView {
         Label label = new Label(labelText);
         label.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
-        comboBox.setPrefWidth(250);
+        comboBox.setPrefWidth(200);
         Button reserve = new Button("Réserver");
         reserve.setStyle("-fx-font-size: 20px; -fx-background-color: #2196F3; -fx-text-fill: white;");
 

@@ -46,6 +46,5 @@ public class Book extends MediaObject {
     }
     public void setPageCount(int pageCount) {
         this.pageCount = pageCount;
-    }
-    
+    }    
 }

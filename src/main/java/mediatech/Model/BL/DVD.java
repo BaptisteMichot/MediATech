@@ -19,6 +19,5 @@ public class DVD extends MediaObject {
     }
     public void setDuration(int duration) {
         this.duration = duration;
-    }
-    
+    }    
 }

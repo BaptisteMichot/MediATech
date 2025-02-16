@@ -50,4 +50,11 @@ public class MediaObject {
     public void setPublicationDate(Date publicationDate) { 
         this.publicationDate = publicationDate;
     }
+
+
+    //display title in comboboxes
+    @Override
+    public String toString() {
+        return this.title;
+    }
 }
