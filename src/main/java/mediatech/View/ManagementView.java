@@ -12,6 +12,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ScrollPane;
 import mediatech.Model.BL.User;
 import mediatech.Controller.ManagementController;
 
@@ -30,18 +31,11 @@ public class ManagementView {
         layout.setPadding(new Insets(40));
         layout.setAlignment(Pos.CENTER);
 
-        showReservations();
-        restocking();
-        addBook();
-        deleteBook();
-        addDVD();
-        deleteDVD();
-        addBluray();
-        deleteBluray();
-
         layout.getChildren().addAll(showReservations(), restocking(), addBook(), deleteBook(), addDVD(), deleteDVD(), addBluray(), deleteBluray());
 
-        Scene scene = new Scene(layout, 600, 600);
+        ScrollPane scrollPane = new ScrollPane(layout);
+
+        Scene scene = new Scene(scrollPane, 600, 600);
         stage.setTitle("Gestion de la médiathèque");
         stage.setScene(scene);
         stage.show();
