@@ -7,7 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class FineDAO {
+public class FineDAO implements IFineDAO {
     private Connection connection;
     private PreparedStatement insertFine;
 
@@ -20,6 +20,8 @@ public class FineDAO {
           }
     }
     
+    
+    @Override
     public boolean insertFine(Fine fine) {
         try {
             insertFine.setInt(1, fine.getReservationId());
@@ -34,6 +36,8 @@ public class FineDAO {
         return true;
     }
 
+
+    @Override
     public boolean close() {
         boolean returnValue = true;
 

@@ -2,12 +2,13 @@ package mediatech.Controller;
 
 import mediatech.Model.BL.User;
 import mediatech.Model.DAL.DBConnection;
+import mediatech.Model.DAL.User.IUserDAO;
 import mediatech.Model.DAL.User.UserDAO;
 import mediatech.View.LoginView;
 
 public class LoginController {
     private LoginView view;
-    private UserDAO userDAO;
+    private IUserDAO userDAO;
     private User currentUser;
     private DBConnection dbConnection;
 

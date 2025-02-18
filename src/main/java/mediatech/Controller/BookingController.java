@@ -5,11 +5,15 @@ import mediatech.Model.BL.DVD;
 import mediatech.Model.BL.Bluray;
 import mediatech.Model.BL.MediaObject;
 import mediatech.Model.BL.Reservation;
+import mediatech.Model.DAL.Book.IBookDAO;
 import mediatech.Model.DAL.Book.BookDAO;
+import mediatech.Model.DAL.DVD.IDVDDAO;
 import mediatech.Model.DAL.DVD.DVDDAO;
-import mediatech.Model.DAL.DBConnection;
+import mediatech.Model.DAL.Bluray.IBlurayDAO;
 import mediatech.Model.DAL.Bluray.BlurayDAO;
+import mediatech.Model.DAL.Reservation.IReservationDAO;
 import mediatech.Model.DAL.Reservation.ReservationDAO;
+import mediatech.Model.DAL.DBConnection;
 import mediatech.View.BookingView;
 
 import java.util.ArrayList;
@@ -18,10 +22,10 @@ import java.util.Calendar;
 
 public class BookingController {
     private BookingView view;
-    private BookDAO bookDAO;
-    private DVDDAO dvdDAO;
-    private BlurayDAO blurayDAO;
-    private ReservationDAO reservationDAO;
+    private IBookDAO bookDAO;
+    private IDVDDAO dvdDAO;
+    private IBlurayDAO blurayDAO;
+    private IReservationDAO reservationDAO;
     private DBConnection dbConnection;
 
     public BookingController(BookingView view) {

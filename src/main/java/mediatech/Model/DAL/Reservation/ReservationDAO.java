@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ReservationDAO {
+public class ReservationDAO implements IReservationDAO {
     private Connection connection;
     private PreparedStatement insertReservation;
     private PreparedStatement selectReservations;
@@ -33,6 +33,8 @@ public class ReservationDAO {
         }
     }
 
+
+    @Override
     public boolean addReservation(Reservation reservation) {
         try {
             insertReservation.setString(1, reservation.getMediaType());
@@ -48,6 +50,8 @@ public class ReservationDAO {
         return true;
     }
 
+
+    @Override
     public ArrayList<Reservation> selectReservations(String lastName, String firstName) {
         ArrayList<Reservation> reservationsList = new ArrayList<Reservation>();
         try {
@@ -66,6 +70,8 @@ public class ReservationDAO {
         return reservationsList;
     }
 
+
+    @Override
     public boolean deleteReservation(String mediaType, int mediaId) {
         try {
             this.deleteReservation.setString(1, mediaType);
@@ -78,6 +84,8 @@ public class ReservationDAO {
         return true;
     }
 
+
+    @Override
     public Date selectExpirationDateById(int reservationId) {
         Date expirationDate = null;
         try {
@@ -92,6 +100,8 @@ public class ReservationDAO {
         return expirationDate;
     }
 
+
+    @Override
     public boolean close() {
         boolean returnValue = true;
 

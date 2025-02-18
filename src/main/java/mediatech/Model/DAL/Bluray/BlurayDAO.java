@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class BlurayDAO {
+public class BlurayDAO implements IBlurayDAO {
     private Connection connection;
     private PreparedStatement selectAvailableBlurays;
     private PreparedStatement selectBlurayTitleById;
@@ -36,7 +36,7 @@ public class BlurayDAO {
     }
 
 
-    //@Override
+    @Override
     public ArrayList<Bluray> getAllAvailableBlurays() {
         ArrayList<Bluray> listBlurays = new ArrayList<Bluray>();
         try {
@@ -53,6 +53,7 @@ public class BlurayDAO {
     }
 
 
+    @Override
     public String getBlurayTitleById(int id) {
         String title = "";
         try {            
@@ -67,6 +68,8 @@ public class BlurayDAO {
         return title;
     }
 
+
+    @Override
     public int getBlurayIdByTitle(String title) {
         int id = -1;
         try {            
@@ -81,6 +84,8 @@ public class BlurayDAO {
         return id;
     }
 
+
+    @Override
     public boolean updateBlurayAvailability(int id, boolean availability) {
         try {
             this.updateBlurayAvailability.setBoolean(1, availability);
@@ -93,6 +98,8 @@ public class BlurayDAO {
         }
     }
 
+
+    @Override
     public boolean updateBlurayState(int id, String state) {
         try {
             this.updateBlurayState.setString(1, state);
@@ -105,6 +112,8 @@ public class BlurayDAO {
         }
     }
 
+
+    @Override
     public boolean insertBluray(String title, String state, Date publicationDate, boolean is4K, int duration) {
         try {
             this.insertBluray.setString(1, title);
@@ -121,6 +130,8 @@ public class BlurayDAO {
         return true;
     }
 
+
+    @Override
     public boolean deleteBluray(String title) {
         try {
             this.deleteBluray.setString(1, title);
@@ -133,6 +144,7 @@ public class BlurayDAO {
     }
 
 
+    @Override
     public boolean close() {
         boolean returnValue = true;
 
@@ -202,42 +214,4 @@ public class BlurayDAO {
         }
         return returnValue;
     }
-
-
-    // //@Override
-    // public boolean create(Bluray bluray) {
-    //     try {
-    //         String query = "INSERT INTO bluray (title, duration) VALUES (?, ?)";
-    //         PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-    //         stmt.setString(1, bluray.getTitle());
-    //         stmt.setInt(2, bluray.getDuration());
-
-    //         int affectedRows = stmt.executeUpdate();
-    //         if (affectedRows > 0) {
-    //             ResultSet generatedKeys = stmt.getGeneratedKeys();
-    //             if (generatedKeys.next()) {
-    //                 bluray.setId(generatedKeys.getInt(1));
-    //             }
-    //             return true;
-    //         }
-    //     } catch (SQLException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return false;
-    // }
-
-
-    // //@Override
-    // public boolean delete(int id) {
-    //     try {
-    //         String query = "DELETE FROM bluray WHERE id = ?";
-    //         PreparedStatement stmt = connection.prepareStatement(query);
-    //         stmt.setInt(1, id);
-
-    //         return stmt.executeUpdate() > 0;
-    //     } catch (SQLException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return false;
-    // }
 }

@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class BookDAO {
+public class BookDAO implements IBookDAO {
     private Connection connection;
     private PreparedStatement selectAvailableBooks;
     private PreparedStatement selectBookTitleById;
@@ -37,7 +37,7 @@ public class BookDAO {
     }
 
 
-    //@Override
+    @Override
     public ArrayList<Book> getAllAvailableBooks() {
         ArrayList<Book> listBooks = new ArrayList<Book>();
         try {
@@ -54,6 +54,7 @@ public class BookDAO {
     }
 
 
+    @Override
     public String getBookTitleById(int id) {
         String title = "";
         try {            
@@ -68,6 +69,8 @@ public class BookDAO {
         return title;
     }
 
+
+    @Override
     public int getBookIdByTitle(String title) {
         int id = -1;
         try {            
@@ -82,6 +85,8 @@ public class BookDAO {
         return id;
     }
 
+
+    @Override
     public boolean updateBookAvailability(int id, boolean availability) {
         try {
             this.updateBookAvailability.setBoolean(1, availability);
@@ -94,6 +99,8 @@ public class BookDAO {
         return true;
     }
 
+
+    @Override
     public boolean updateBookState(int id, String state) {
         try {
             this.updateBookState.setString(1, state);
@@ -106,6 +113,8 @@ public class BookDAO {
         return true;
     }
 
+
+    @Override
     public boolean insertBook(String title, String state, Date publicationDate, String isbn, 
         String author, String publisher, int pageCount) {
 
@@ -126,6 +135,8 @@ public class BookDAO {
         return true;
     }
 
+
+    @Override
     public boolean deleteBook(String title) {
         try {
             this.deleteBook.setString(1, title);
@@ -138,6 +149,7 @@ public class BookDAO {
     }
 
 
+    @Override
     public boolean close() {
         boolean returnValue = true;
 
@@ -207,44 +219,4 @@ public class BookDAO {
         }
         return returnValue;
     }
-
-
-    //@Override
-    // public boolean create(Book book) {
-    //     try {
-    //         String query = "INSERT INTO book (title, author, isbn, page_count) VALUES (?, ?, ?, ?)";
-    //         PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-    //         stmt.setString(1, book.getTitle());
-    //         stmt.setString(2, book.getAuthor());
-    //         stmt.setString(3, book.getIsbn());
-    //         stmt.setInt(4, book.getPageCount());
-
-    //         int affectedRows = stmt.executeUpdate();
-    //         if (affectedRows > 0) {
-    //             ResultSet generatedKeys = stmt.getGeneratedKeys();
-    //             if (generatedKeys.next()) {
-    //                 book.setId(generatedKeys.getInt(1));
-    //             }
-    //             return true;
-    //         }
-    //     } catch (SQLException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return false;
-    // }
-
-    
-    //@Override
-    // public boolean delete(int id) {
-    //     try {
-    //         String query = "DELETE FROM book WHERE id = ?";
-    //         PreparedStatement stmt = connection.prepareStatement(query);
-    //         stmt.setInt(1, id);
-
-    //         return stmt.executeUpdate() > 0;
-    //     } catch (SQLException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return false;
-    // }
 }

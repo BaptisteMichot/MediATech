@@ -2,10 +2,15 @@ package mediatech.Controller;
 
 import mediatech.View.ManagementView;
 import mediatech.Model.DAL.DBConnection;
+import mediatech.Model.DAL.Reservation.IReservationDAO;
 import mediatech.Model.DAL.Reservation.ReservationDAO;
+import mediatech.Model.DAL.Book.IBookDAO;
 import mediatech.Model.DAL.Book.BookDAO;
+import mediatech.Model.DAL.DVD.IDVDDAO;
 import mediatech.Model.DAL.DVD.DVDDAO;
+import mediatech.Model.DAL.Fine.IFineDAO;
 import mediatech.Model.DAL.Fine.FineDAO;
+import mediatech.Model.DAL.Bluray.IBlurayDAO;
 import mediatech.Model.DAL.Bluray.BlurayDAO;
 import mediatech.Model.BL.Reservation;
 import mediatech.Model.BL.Fine;
@@ -16,11 +21,11 @@ import java.util.Date;
 public class ManagementController {
     private ManagementView view;
     private DBConnection dbConnection;
-    private ReservationDAO reservationDAO;
-    private BookDAO bookDAO;
-    private DVDDAO dvdDAO;
-    private BlurayDAO blurayDAO;
-    private FineDAO fineDAO;
+    private IReservationDAO reservationDAO;
+    private IBookDAO bookDAO;
+    private IDVDDAO dvdDAO;
+    private IBlurayDAO blurayDAO;
+    private IFineDAO fineDAO;
 
     public ManagementController(ManagementView view) {
         this.view = view;

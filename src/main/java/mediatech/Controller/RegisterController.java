@@ -2,12 +2,13 @@ package mediatech.Controller;
 
 import mediatech.Model.BL.User;
 import mediatech.Model.DAL.DBConnection;
+import mediatech.Model.DAL.User.IUserDAO;
 import mediatech.Model.DAL.User.UserDAO;
 import mediatech.View.RegisterView;
 
 public class RegisterController {
     private RegisterView view;
-    private UserDAO userDAO;
+    private IUserDAO userDAO;
     private DBConnection dbConnection;
 
     public RegisterController(RegisterView view) {

@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserDAO {
+public class UserDAO implements IUserDAO {
 
     private Connection connection;
     private PreparedStatement insertUser;
@@ -25,6 +25,8 @@ public class UserDAO {
         }
     }
 
+
+    @Override
     public boolean register(User user) {
 
         if (!user.isValidEmail(user.getEmail()) || !user.isValidPassword(user.getPassword()) || 
@@ -47,6 +49,7 @@ public class UserDAO {
     }
 
 
+    @Override
     public boolean login(String email, String password) {
         try {
             selectUser.setString(1, email);
@@ -59,6 +62,8 @@ public class UserDAO {
         }
     }
 
+
+    @Override
     public boolean updatePassword(String email, String newPassword) {
         try {
             updatePassword.setString(1, newPassword);
@@ -71,6 +76,8 @@ public class UserDAO {
         return true;
     }
 
+
+    @Override
     public User getUser(String email, String password) {
         try {
             selectUser.setString(1, email);
@@ -87,6 +94,8 @@ public class UserDAO {
         return null;
     }
     
+
+    @Override
     public boolean close() {
         boolean returnValue = true;
 

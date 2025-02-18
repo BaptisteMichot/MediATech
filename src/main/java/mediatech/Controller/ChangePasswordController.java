@@ -1,13 +1,14 @@
 package mediatech.Controller;
 
 import mediatech.Model.BL.User;
+import mediatech.Model.DAL.User.IUserDAO;
 import mediatech.Model.DAL.User.UserDAO;
 import mediatech.Model.DAL.DBConnection;
 import mediatech.View.ChangePasswordView;
 
 public class ChangePasswordController {
     private ChangePasswordView view;
-    private UserDAO userDAO;
+    private IUserDAO userDAO;
     private User user;
     private DBConnection dbConnection;
 

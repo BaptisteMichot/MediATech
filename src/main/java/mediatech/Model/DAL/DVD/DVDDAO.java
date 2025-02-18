@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class DVDDAO {
+public class DVDDAO implements IDVDDAO {
     private Connection connection;
     private PreparedStatement selectAvailableDVDs;
     private PreparedStatement selectDVDTitleById;
@@ -36,7 +36,7 @@ public class DVDDAO {
     }
 
 
-    //@Override
+    @Override
     public ArrayList<DVD> getAllAvailableDVDs() {
         ArrayList<DVD> listDVDs = new ArrayList<DVD>();
         try {
@@ -53,6 +53,7 @@ public class DVDDAO {
     }
 
 
+    @Override
     public String getDVDTitleById(int id) {
         String title = "";
         try {            
@@ -68,6 +69,7 @@ public class DVDDAO {
     }
 
 
+    @Override
     public int getDVDIdByTitle(String title) {
         int id = -1;
         try {            
@@ -83,6 +85,7 @@ public class DVDDAO {
     }
 
 
+    @Override
     public boolean updateDVDAvailability(int id, boolean availability) {
         try {
             this.updateDVDAvailability.setBoolean(1, availability);
@@ -96,6 +99,7 @@ public class DVDDAO {
     }
 
 
+    @Override
     public boolean updateDVDState(int id, String state) {
         try {
             this.updateDVDState.setString(1, state);
@@ -108,6 +112,8 @@ public class DVDDAO {
         return true;    
     }
 
+
+    @Override
     public boolean insertDVD(String title, String state, Date publicationDate, int duration) {
         try {
             this.insertDVD.setString(1, title);
@@ -123,6 +129,8 @@ public class DVDDAO {
         return true;
     }
 
+
+    @Override
     public boolean deleteDVD(String title) {
         try {
             this.deleteDVD.setString(1, title);
@@ -135,6 +143,7 @@ public class DVDDAO {
     }
 
 
+    @Override
     public boolean close() {
         boolean returnValue = true;
 
@@ -204,42 +213,4 @@ public class DVDDAO {
         }
         return returnValue;
     }
-
-
-    // //@Override
-    // public boolean create(DVD dvd) {
-    //     try {
-    //         String query = "INSERT INTO dvd (title, duration) VALUES (?, ?)";
-    //         PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-    //         stmt.setString(1, dvd.getTitle());
-    //         stmt.setInt(2, dvd.getDuration());
-
-    //         int affectedRows = stmt.executeUpdate();
-    //         if (affectedRows > 0) {
-    //             ResultSet generatedKeys = stmt.getGeneratedKeys();
-    //             if (generatedKeys.next()) {
-    //                 dvd.setId(generatedKeys.getInt(1));
-    //             }
-    //             return true;
-    //         }
-    //     } catch (SQLException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return false;
-    // }
-
-
-    // //@Override
-    // public boolean delete(int id) {
-    //     try {
-    //         String query = "DELETE FROM dvd WHERE id = ?";
-    //         PreparedStatement stmt = connection.prepareStatement(query);
-    //         stmt.setInt(1, id);
-
-    //         return stmt.executeUpdate() > 0;
-    //     } catch (SQLException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return false;
-    // }
 }
