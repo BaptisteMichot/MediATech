@@ -9,15 +9,17 @@ public class Reservation {
     private Date reservationDate;
     private Date expirationDate;
     private boolean active;
+    private int idReservation;
 
 
-    public Reservation(int idMedia, int idUser, String mediaType, Date reservationDate, Date expirationDate, boolean active) {
+    public Reservation(int idMedia, int idUser, String mediaType, Date reservationDate, Date expirationDate, boolean active, int idReservation) {
         this.idMedia = idMedia;
         this.idUser = idUser;
         this.mediaType = mediaType;
         this.reservationDate = reservationDate;
         this.expirationDate = expirationDate;
         this.active = active;
+        this.idReservation = idReservation;
     }
 
     public Reservation() {}
@@ -63,5 +65,12 @@ public class Reservation {
     }
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public int getIdReservation() {
+        return idReservation;
+    }
+    public void setIdReservation(int idReservation) {
+        this.idReservation = idReservation;
     }
 }

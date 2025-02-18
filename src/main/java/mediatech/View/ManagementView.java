@@ -31,7 +31,7 @@ public class ManagementView {
         layout.setPadding(new Insets(40));
         layout.setAlignment(Pos.CENTER);
 
-        layout.getChildren().addAll(showReservations(), restocking(), addBook(), deleteBook(), addDVD(), deleteDVD(), addBluray(), deleteBluray());
+        layout.getChildren().addAll(showReservations(), restocking(), checkFine(), addBook(), deleteBook(), addDVD(), deleteDVD(), addBluray(), deleteBluray());
 
         ScrollPane scrollPane = new ScrollPane(layout);
 
@@ -91,6 +91,27 @@ public class ManagementView {
         restockingButton.setOnAction(e -> controller.restocking(mediaTypeField.getText(), titleField.getText(), stateField.getText()));
 
         HBox hbox = new HBox(10, mediaTypeField, titleField, stateField, restockingButton);
+        hbox.setAlignment(Pos.TOP_LEFT);        
+        VBox vbox = new VBox(20, label, hbox);
+        vbox.setAlignment(Pos.TOP_LEFT);
+
+        return vbox;
+    }
+
+    private VBox checkFine() {
+        Label label = new Label("Appliquer une éventuelle amende");
+        label.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+
+        TextField reservationIdField = new TextField();
+        reservationIdField.setMaxWidth(300);
+        reservationIdField.setStyle("-fx-font-size: 15px;");
+        reservationIdField.setPromptText("Id de la réservation");
+
+        Button checkFineButton = new Button("Valider");
+        checkFineButton.setStyle("-fx-font-size: 15px; -fx-background-color: #1ab2d1; -fx-text-fill: white;");
+        checkFineButton.setOnAction(e -> controller.checkFine(Integer.parseInt(reservationIdField.getText())));
+
+        HBox hbox = new HBox(10, reservationIdField, checkFineButton);
         hbox.setAlignment(Pos.TOP_LEFT);        
         VBox vbox = new VBox(20, label, hbox);
         vbox.setAlignment(Pos.TOP_LEFT);
@@ -248,9 +269,10 @@ public class ManagementView {
         publicationDateField.setStyle("-fx-font-size: 15px;");
         publicationDateField.setPromptText("Date de publication");
 
+        Label is4KLabel = new Label("4K ?");
+        is4KLabel.setStyle("-fx-font-size: 25px;");
         CheckBox is4KField = new CheckBox();
-        is4KField.setMaxWidth(300);
-        is4KField.setStyle("-fx-font-size: 15px;");
+        HBox is4K = new HBox(10, is4KLabel, is4KField);
 
         TextField durationField = new TextField();
         durationField.setMaxWidth(300);
@@ -262,7 +284,7 @@ public class ManagementView {
         addButton.setOnAction(e -> controller.addBluray(titleField.getText(), stateField.getText(), 
             java.sql.Date.valueOf(publicationDateField.getValue()), is4KField.isSelected(), Integer.parseInt(durationField.getText())));
 
-        HBox hbox = new HBox(10, titleField, stateField, publicationDateField, is4KField, durationField, addButton);
+        HBox hbox = new HBox(10, titleField, stateField, publicationDateField, is4K, durationField, addButton);
         hbox.setAlignment(Pos.TOP_LEFT);
         VBox vbox = new VBox(20, label, hbox);
         vbox.setAlignment(Pos.TOP_LEFT);

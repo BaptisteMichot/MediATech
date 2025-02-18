@@ -5,8 +5,10 @@ import mediatech.Model.DAL.DBConnection;
 import mediatech.Model.DAL.Reservation.ReservationDAO;
 import mediatech.Model.DAL.Book.BookDAO;
 import mediatech.Model.DAL.DVD.DVDDAO;
+import mediatech.Model.DAL.Fine.FineDAO;
 import mediatech.Model.DAL.Bluray.BlurayDAO;
 import mediatech.Model.BL.Reservation;
+import mediatech.Model.BL.Fine;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +20,7 @@ public class ManagementController {
     private BookDAO bookDAO;
     private DVDDAO dvdDAO;
     private BlurayDAO blurayDAO;
+    private FineDAO fineDAO;
 
     public ManagementController(ManagementView view) {
         this.view = view;
@@ -26,6 +29,7 @@ public class ManagementController {
         this.bookDAO = new BookDAO(dbConnection);
         this.dvdDAO = new DVDDAO(dbConnection);
         this.blurayDAO = new BlurayDAO(dbConnection);
+        this.fineDAO = new FineDAO(dbConnection);
     }
 
     public void showReservations(String lastName, String firstName) {
@@ -109,6 +113,32 @@ public class ManagementController {
         } else {
             view.showErrorMessage("Média non reconnu");
         }
+
+
+    }
+
+    public void checkFine(int reservationId) {
+        try {
+            double dailyAmount = 10.0;
+            Date expirationDate = reservationDAO.selectExpirationDateById(reservationId);
+            Fine fine = new Fine();
+            fine.setReservationId(reservationId);
+            fine.setOverdueDays(fine.calculateNbOverdueDays(expirationDate));
+            fine.setDailyAmount(dailyAmount);
+            fine.setFineAmount(fine.calculateFineAmount(fine.getOverdueDays(), dailyAmount));
+            
+            if (fine.getOverdueDays() > 0) {
+                if (fineDAO.insertFine(fine)) {
+                    view.showSuccessMessage("Amende pour la réservation " + reservationId + ": " + fine.getFineAmount() + " euros");
+                } else {
+                    view.showErrorMessage("Erreur lors de l'application de l'amende pour la réservation " + reservationId);
+                }
+            } else {
+                view.showErrorMessage("Il n'y a aucun jour de retard pour la réservation " + reservationId);
+            }
+        } catch (Exception e) {
+            view.showErrorMessage("Il n'y a pas d'amende à payer pour la réservation " + reservationId);
+        }
     }
 
     public void addBook(String title, String state, Date publicationDate, String isbn, String author, String publisher, int pageCount) {
@@ -183,4 +213,3 @@ public class ManagementController {
         }
     }
 }
-

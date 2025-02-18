@@ -8,12 +8,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ReservationDAO {
     private Connection connection;
     private PreparedStatement insertReservation;
     private PreparedStatement selectReservations;
     private PreparedStatement deleteReservation;
+    private PreparedStatement selectExpirationDateById;
 
     public ReservationDAO(DBConnection dbConnection) {
         try {
@@ -22,9 +24,10 @@ public class ReservationDAO {
             this.insertReservation = connection.prepareStatement("INSERT INTO reservation" +
                 "(mediaType, id_media, id_user, reservationDate, expirationDate, active) VALUES (?, ?, ?, ?, ?, true)");
             this.selectReservations = connection.prepareStatement("SELECT reservation.mediaType, reservation.id_media, users.id, " +
-                "reservation.reservationDate, reservation.expirationDate, reservation.active FROM reservation reservation " + 
+                "reservation.reservationDate, reservation.expirationDate, reservation.active, reservation.reservation_id FROM reservation reservation " + 
                 "JOIN Users users ON reservation.id_user = users.id WHERE users.lastname = ? AND users.firstname = ? AND reservation.active = ?");
             this.deleteReservation = connection.prepareStatement("DELETE FROM reservation WHERE mediaType = ? AND id_media = ?");
+            this.selectExpirationDateById = connection.prepareStatement("SELECT expirationDate FROM reservation WHERE reservation_id = ?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -54,7 +57,7 @@ public class ReservationDAO {
             ResultSet set = this.selectReservations.executeQuery();
             while (set.next()) {
                 Reservation reservation = new Reservation(set.getInt(2), set.getInt(3), set.getString(1), 
-                    set.getDate(4), set.getDate(5), set.getBoolean(6));
+                    set.getDate(4), set.getDate(5), set.getBoolean(6), set.getInt(7));
                 reservationsList.add(reservation);
             }
         } catch (SQLException e) {
@@ -73,6 +76,20 @@ public class ReservationDAO {
             return false;
         }
         return true;
+    }
+
+    public Date selectExpirationDateById(int reservationId) {
+        Date expirationDate = null;
+        try {
+            this.selectExpirationDateById.setInt(1, reservationId);
+            ResultSet set = this.selectExpirationDateById.executeQuery();
+            if (set.next()) {
+                expirationDate = set.getDate(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return expirationDate;
     }
 
     public boolean close() {
@@ -105,6 +122,14 @@ public class ReservationDAO {
         if (this.deleteReservation != null) {
             try {
                 this.deleteReservation.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                returnValue = false;
+            }
+        }
+        if (this.selectExpirationDateById != null) {
+            try {
+                this.selectExpirationDateById.close();
             } catch (SQLException e) {
                 e.printStackTrace();
                 returnValue = false;

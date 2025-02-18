@@ -78,7 +78,7 @@ public class BookingController {
 
 
         Reservation reservation = new Reservation(mediaObject.getId(), view.getCurrentUser().getId(), 
-            mediaType, reservationDate, expirationDate, true);
+            mediaType, reservationDate, expirationDate, true, -1);
 
         if (reservationDAO.addReservation(reservation)) {
             view.showSuccessMessage(message + mediaObject.getTitle() + " a bien été réservé");
