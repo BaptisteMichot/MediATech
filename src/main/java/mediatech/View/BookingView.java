@@ -45,9 +45,10 @@ public class BookingView {
             createMediaSection("DVDs", dvdComboBox = new ComboBox<>()), 
             createMediaSection("Blurays", blurayComboBox = new ComboBox<>()));
 
-        Scene scene = new Scene(layout, 600, 600);
-        stage.setTitle("Réservation");
+        Scene scene = new Scene(layout, 1530, 780);
         stage.setScene(scene);
+        stage.sizeToScene();
+        stage.setTitle("Réservation");        
         stage.show();
 
         //fill comboboxes

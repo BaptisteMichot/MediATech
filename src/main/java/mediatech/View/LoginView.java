@@ -60,12 +60,10 @@ public class LoginView {
 
         layout.getChildren().addAll(titleLabel, emailField, passwordField, spacer,loginButton, registerButton, changePasswordButton);
 
-        Scene scene = new Scene(layout, 600, 600);
-        stage.setTitle("Connexion");
+        Scene scene = new Scene(layout, 1530, 780);
         stage.setScene(scene);
-        //full screen
-        stage.setWidth(javafx.stage.Screen.getPrimary().getVisualBounds().getWidth());
-        stage.setHeight(javafx.stage.Screen.getPrimary().getVisualBounds().getHeight());
+        stage.sizeToScene();
+        stage.setTitle("Connexion");
         stage.show();
     }
 

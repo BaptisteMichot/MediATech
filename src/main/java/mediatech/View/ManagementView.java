@@ -35,9 +35,10 @@ public class ManagementView {
 
         ScrollPane scrollPane = new ScrollPane(layout);
 
-        Scene scene = new Scene(scrollPane, 600, 600);
-        stage.setTitle("Gestion de la médiathèque");
+        Scene scene = new Scene(scrollPane, 1530, 780);
         stage.setScene(scene);
+        stage.sizeToScene();
+        stage.setTitle("Gestion de la médiathèque");        
         stage.show();
     }
 

@@ -63,9 +63,10 @@ public class ChangePasswordView {
 
         layout.getChildren().addAll(titleLabel, emailField, currentPasswordField, newPasswordField, spacer, changePasswordButton, goBackButton);
 
-        Scene scene = new Scene(layout, 600, 600);
-        stage.setTitle("Changer de mot de passe");
+        Scene scene = new Scene(layout, 1530, 780);
         stage.setScene(scene);
+        stage.sizeToScene();
+        stage.setTitle("Changer de mot de passe");        
         stage.show();
     }
 

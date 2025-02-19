@@ -71,9 +71,10 @@ public class RegisterView {
         layout.getChildren().addAll(titleLabel, lastNameField, firstNameField, emailField, 
             passwordField, spacer, registerButton, goBackButton);
 
-        Scene scene = new Scene(layout, 600, 600);
-        stage.setTitle("Inscription");
+        Scene scene = new Scene(layout, 1530, 780);
         stage.setScene(scene);
+        stage.sizeToScene();
+        stage.setTitle("Inscription");        
         stage.show();
     }
 
