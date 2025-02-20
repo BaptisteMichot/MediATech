@@ -99,7 +99,7 @@ public class BookingView {
 
     public void showSuccessMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Succès");
+        alert.setTitle("Validation");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.show();
