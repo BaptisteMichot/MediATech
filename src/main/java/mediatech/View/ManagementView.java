@@ -49,12 +49,12 @@ public class ManagementView {
         TextField lastNameField = new TextField();
         lastNameField.setMaxWidth(300);
         lastNameField.setStyle("-fx-font-size: 15px;");
-        lastNameField.setPromptText("Nom");
+        lastNameField.setPromptText("Prénom");
 
         TextField firstNameField = new TextField();
         firstNameField.setMaxWidth(300);
         firstNameField.setStyle("-fx-font-size: 15px;");
-        firstNameField.setPromptText("Prénom");
+        firstNameField.setPromptText("Nom");
 
         Button showReservationsButton = new Button("Valider");
         showReservationsButton.setStyle("-fx-font-size: 15px; -fx-background-color: #1ab2d1; -fx-text-fill: white;");
