@@ -16,10 +16,20 @@ public class ReservationDAO implements IReservationDAO {
     private PreparedStatement selectReservations;
     private PreparedStatement deleteReservation;
     private PreparedStatement selectExpirationDateById;
+    private PreparedStatement createTable;
 
     public ReservationDAO(DBConnection dbConnection) {
         try {
             this.connection = dbConnection.getConnection();
+            this.createTable = connection.prepareStatement("CREATE TABLE IF NOT EXISTS reservation (mediatype VARCHAR(10) NOT NULL, "
+            + "id_media INTEGER NOT NULL, id_user INTEGER NOT NULL, reservationdate Date NOT NULL DEFAULT CURRENT_DATE, "
+            + "expirationdate DATE NOT NULL, active BOOLEAN NOT NULL, reservation_id SERIAL UNIQUE,"
+            + "PRIMARY KEY (mediatype, id_media, id_user), FOREIGN KEY (id_user) REFERENCES users(id));");
+            try {
+                this.createTable.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
             this.insertReservation = connection.prepareStatement("INSERT INTO reservation" +
                 "(mediaType, id_media, id_user, reservationDate, expirationDate, active) VALUES (?, ?, ?, ?, ?, true)");

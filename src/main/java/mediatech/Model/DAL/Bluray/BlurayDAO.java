@@ -19,10 +19,19 @@ public class BlurayDAO implements IBlurayDAO {
     private PreparedStatement updateBlurayState;
     private PreparedStatement insertBluray;
     private PreparedStatement deleteBluray;
+    private PreparedStatement createTable;
 
     public BlurayDAO(DBConnection dbConnection) {
         try {
             this.connection = dbConnection.getConnection();
+            this.createTable = connection.prepareStatement("CREATE TABLE IF NOT EXISTS bluray(id SERIAL PRIMARY KEY, title VARCHAR(200) NOT NULL, available BOOLEAN NOT NULL, " + 
+                "state VARCHAR(50) NOT NULL, publicationdate DATE NOT NULL, is4k BOOLEAN NOT NULL, duration INT NOT NULL);");
+            try {
+                this.createTable.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
             this.selectAvailableBlurays = connection.prepareStatement("SELECT * FROM bluray WHERE available = true");
             this.selectBlurayTitleById = connection.prepareStatement("SELECT title FROM bluray WHERE id = ?");
             this.selectBlurayIdByTitle = connection.prepareStatement("SELECT id FROM bluray WHERE title = ?");

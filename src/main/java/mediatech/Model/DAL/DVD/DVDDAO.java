@@ -19,10 +19,19 @@ public class DVDDAO implements IDVDDAO {
     private PreparedStatement updateDVDState;
     private PreparedStatement insertDVD;
     private PreparedStatement deleteDVD;
+    private PreparedStatement createTable;
 
     public DVDDAO(DBConnection dbConnection) {
         try {
             this.connection = dbConnection.getConnection();
+            this.createTable = connection.prepareStatement("CREATE TABLE IF NOT EXISTS dvd(id SERIAL PRIMARY KEY, title VARCHAR(200) NOT NULL, "
+                + "available BOOLEAN NOT NULL, state VARCHAR(50) NOT NULL, publicationdate DATE NOT NULL, duration INT NOT NULL);");
+            try {
+                this.createTable.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
             this.selectAvailableDVDs = connection.prepareStatement("SELECT * FROM dvd WHERE available = true");
             this.selectDVDTitleById = connection.prepareStatement("SELECT title FROM dvd WHERE id = ?");
             this.selectDVDIdByTitle = connection.prepareStatement("SELECT id FROM dvd WHERE title = ?");

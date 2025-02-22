@@ -19,10 +19,20 @@ public class BookDAO implements IBookDAO {
     private PreparedStatement updateBookState;
     private PreparedStatement insertBook;
     private PreparedStatement deleteBook;
+    private PreparedStatement createTable;
 
     public BookDAO(DBConnection dbConnection) {
         try {
             this.connection = dbConnection.getConnection();
+            this.createTable = connection.prepareStatement("CREATE TABLE IF NOT EXISTS book(id SERIAL PRIMARY KEY, title VARCHAR(200) NOT NULL, "
+                + "available BOOLEAN NOT NULL, state VARCHAR(50) NOT NULL, publicationdate DATE NOT NULL, isbn VARCHAR(20) UNIQUE NOT NULL, "
+                + "author VARCHAR(100) NOT NULL, publisher VARCHAR(100) NOT NULL, pagecount INT NOT NULL);");
+            try {
+                this.createTable.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
             this.selectAvailableBooks = connection.prepareStatement("SELECT * FROM book WHERE available = true");
             this.selectBookTitleById = connection.prepareStatement("SELECT title FROM book WHERE id = ?");
             this.selectBookIdByTitle = connection.prepareStatement("SELECT id FROM book WHERE title = ?");

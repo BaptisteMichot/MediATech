@@ -13,10 +13,22 @@ public class UserDAO implements IUserDAO {
     private PreparedStatement insertUser;
     private PreparedStatement selectUser; 
     private PreparedStatement updatePassword;   
+    private PreparedStatement createTable;
 
     public UserDAO(DBConnection dbConnection) {
         try {
             this.connection = dbConnection.getConnection();
+            this.createTable = connection.prepareStatement("CREATE TABLE IF NOT EXISTS users ("
+                + "id SERIAL PRIMARY KEY, firstname VARCHAR(100) NOT NULL, lastname VARCHAR(100) NOT NULL, "
+                + "email VARCHAR(200) UNIQUE NOT NULL, password VARCHAR(200) NOT NULL, role VARCHAR(20), "
+                + "CONSTRAINT uniqueuser UNIQUE (firstname, lastname))");
+
+            try {
+                this.createTable.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
             this.insertUser = connection.prepareStatement("INSERT INTO users (firstName, lastName, email, password, role) VALUES (?, ?, ?, ?, ?)");
             this.selectUser = connection.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?");
             this.updatePassword = connection.prepareStatement("UPDATE users SET password = ? WHERE email = ?");
